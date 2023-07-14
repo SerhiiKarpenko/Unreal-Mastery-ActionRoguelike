@@ -6,7 +6,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-// Sets default values
 ASCharacter::ASCharacter() // constructor
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -24,7 +23,6 @@ ASCharacter::ASCharacter() // constructor
 	bUseControllerRotationYaw = false;
 }
 
-// Called when the game starts or when spawned
 void ASCharacter::BeginPlay() // unit start method
 {
 	Super::BeginPlay();
@@ -43,24 +41,27 @@ void ASCharacter::MoveForward(float value)
 
 void ASCharacter::MoveRight(float value)
 {
-	FRotator ControlRotation = GetControlRotation();
+	FRotator controlRotation = GetControlRotation();
 	
-	ControlRotation.Pitch = 0.0f;
-	ControlRotation.Roll = 0.0f;
+	controlRotation.Pitch = 0.0f;
+	controlRotation.Roll = 0.0f;
+
+	// x = forwad
+	// y = right
+	// z = up
 	
+	FVector rightVector = FRotationMatrix(controlRotation).GetScaledAxis(EAxis::Y);
 	
-	AddMovementInput(ControlRotation.Vector().RightVector, value);
+	AddMovementInput(rightVector, value);
 }
 
-// Called every frame
 void ASCharacter::Tick(float DeltaTime)  // unity update method
 {
 	Super::Tick(DeltaTime);
 
 }
 
-// Called to bind functionality to input
-void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) // here we bind an input
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "SCharacter.generated.h"
 
 class UCameraComponent;
@@ -17,27 +16,26 @@ class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
+	// works firstly, BeginPlayer works after all components and etc is initialized, but constructor works first
 	ASCharacter();
+	
 
 protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComponent;
 	
-	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* SpringArmComponent;
+	UPROPERTY(VisibleAnywhere) // UPROPERTY gives us visible component everywhere
+	USpringArmComponent* SpringArmComponent; 
 
+	virtual void BeginPlay() override; // works like a start method in unity
 	
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	void MoveForward(float value);
+	void MoveForward(float value); // my methhods
 	void MoveRight(float value);
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override; // works like an update method in unity
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // here we bind all input
 
 };
