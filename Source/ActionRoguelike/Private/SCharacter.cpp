@@ -76,7 +76,9 @@ void ASCharacter::MoveRight(float value)
 
 void ASCharacter::PrimaryAttack()
 {
-	FTransform SpawnTransformMatrix = FTransform(GetControlRotation(),GetActorLocation());
+	FVector handLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+	FTransform SpawnTransformMatrix = FTransform(GetControlRotation(),handLocation);
 	
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
