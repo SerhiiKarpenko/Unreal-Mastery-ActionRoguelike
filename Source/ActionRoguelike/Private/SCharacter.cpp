@@ -20,12 +20,31 @@ ASCharacter::ASCharacter() // constructor
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	
-	bUseControllerRotationYaw = false;
 }
 
 void ASCharacter::BeginPlay() // unit start method
 {
 	Super::BeginPlay();
+	
+}
+
+void ASCharacter::Tick(float DeltaTime)  // unity update method
+{
+	Super::Tick(DeltaTime);
+
+}
+
+void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) // here we bind an input
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ASCharacter::MoveRight);
+	
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
 	
 }
 
@@ -50,26 +69,18 @@ void ASCharacter::MoveRight(float value)
 	// y = right
 	// z = up
 	
-	FVector rightVector = FRotationMatrix(controlRotation).GetScaledAxis(EAxis::Y);
+	FVector rightVector = FRotationMatrix(controlRotation).GetScaledAxis(EAxis::Y); // if there a kismetmathlibrary, this is a part of blueprint math
 	
 	AddMovementInput(rightVector, value);
 }
 
-void ASCharacter::Tick(float DeltaTime)  // unity update method
+void ASCharacter::PrimaryAttack()
 {
-	Super::Tick(DeltaTime);
-
-}
-
-void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) // here we bind an input
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ASCharacter::MoveRight);
+	FTransform SpawnTransformMatrix = FTransform(GetControlRotation(),GetActorLocation());
 	
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
+	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTransformMatrix, SpawnParameters);
 }
 
