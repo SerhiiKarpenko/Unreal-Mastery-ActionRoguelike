@@ -22,6 +22,7 @@ ASCharacter::ASCharacter() // constructor
 	InteractionComponent = CreateDefaultSubobject<USInteractionComponent>("Interaction Component");
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
 }
 
 void ASCharacter::BeginPlay() // unit start method
@@ -77,6 +78,17 @@ void ASCharacter::MoveRight(float value)
 }
 
 void ASCharacter::PrimaryAttack()
+{
+	PlayAnimMontage(AtackAniamtion);
+
+	GetWorldTimerManager().SetTimer(TimerHandlePrimaryAttack, this, &ASCharacter::PrimaryAtackTimeElapsed, 0.2f);
+
+	//this one is stopping attack timer, for exmp if player died we just clearing the timer
+	//GetWorldTimerManager().ClearTimer(TimerHandlePrimaryAttack); 
+	
+}
+
+void ASCharacter::PrimaryAtackTimeElapsed()
 {
 	FVector handLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 

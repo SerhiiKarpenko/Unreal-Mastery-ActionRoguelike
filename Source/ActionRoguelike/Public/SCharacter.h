@@ -10,6 +10,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class USInteractionComponent;
+class UAnimMontage;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
@@ -18,9 +19,13 @@ class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 
 protected:
 
-	UPROPERTY(EditAnywhere) // give as a possibility to change it anywhere we want,
+	UPROPERTY(EditAnywhere, Category = "Atack") // give as a possibility to change it anywhere we want,
 	TSubclassOf<AActor> ProjectileClass; // give as a field where we can pass the reference to another class,
-	
+
+	UPROPERTY(EditAnywhere, Category = "Atack")
+	UAnimMontage* AtackAniamtion;
+	FTimerHandle TimerHandlePrimaryAttack;
+
 public:
 	// Sets default values for this character's properties
 	// works firstly, BeginPlayer works after all components and etc is initialized, but constructor works first
@@ -42,6 +47,7 @@ protected:
 	
 	void MoveForward(float value); // my methhods
 	void MoveRight(float value);
+	void PrimaryAtackTimeElapsed();
 	void PrimaryAttack();
 	void PrimaryInteract();
 
