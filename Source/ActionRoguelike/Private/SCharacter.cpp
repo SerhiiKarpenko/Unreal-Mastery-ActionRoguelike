@@ -93,6 +93,8 @@ void ASCharacter::PrimaryInteract()
 	if (InteractionComponent == nullptr)
 		return;
 	
-	InteractionComponent->PrimaryInteract();
+	//InteractionComponent->PrimaryInteract();
+	InteractionComponent->SecondInteract();
 }
+
 
