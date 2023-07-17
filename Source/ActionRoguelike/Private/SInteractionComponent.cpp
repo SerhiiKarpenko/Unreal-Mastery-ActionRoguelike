@@ -53,13 +53,14 @@ void USInteractionComponent::PrimaryInteract()
 
 	AActor* hitActor = hit.GetActor();
 	
-	if(hitActor)
-	{
-		if(hitActor->Implements<USGameplayInterface>())
-		{
-			APawn* playerPawn = Cast<APawn>(player);
-			ISGameplayInterface::Execute_Interact(hitActor, playerPawn);
-		}		
-	}
+	if(hitActor == nullptr)
+		return;
+	
+	
+	if(!hitActor->Implements<USGameplayInterface>())
+		return;
+		
+	APawn* playerPawn = Cast<APawn>(player);
+	ISGameplayInterface::Execute_Interact(hitActor, playerPawn);
 }
 
