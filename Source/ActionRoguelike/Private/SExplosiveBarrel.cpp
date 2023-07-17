@@ -42,6 +42,6 @@ void ASExplosiveBarrel::BeginPlay()
 void ASExplosiveBarrel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 

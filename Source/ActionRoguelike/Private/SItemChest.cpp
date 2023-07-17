@@ -34,7 +34,6 @@ void ASItemChest::BeginPlay()
 void ASItemChest::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ASItemChest::OpenChest()
