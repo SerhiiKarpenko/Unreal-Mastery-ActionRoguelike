@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "SExplosiveBarrel.generated.h"
 
-class URadialForceComponent;
 class UStaticMeshComponent;
+class URadialForceComponent;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASExplosiveBarrel : public AActor
@@ -18,7 +19,7 @@ class ACTIONROGUELIKE_API ASExplosiveBarrel : public AActor
 protected:
 	
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> StaticMesh;
+	UStaticMeshComponent* StaticMeshComponent;
 	
 	UPROPERTY(VisibleAnywhere)
 	URadialForceComponent* RadialForceComponent;
@@ -27,6 +28,10 @@ public:
 	ASExplosiveBarrel();
 
 protected:
+	
+	UFUNCTION() // if you want to bind method like the event, it must be marked as UFUNCTION
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	
 	virtual void BeginPlay() override;
 
 public:	

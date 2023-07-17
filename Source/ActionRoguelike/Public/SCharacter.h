@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SInteractionComponent.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
+class USInteractionComponent;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
@@ -31,13 +33,17 @@ protected:
 	UCameraComponent* CameraComponent;
 	
 	UPROPERTY(VisibleAnywhere) // UPROPERTY gives us visible component everywhere
-	USpringArmComponent* SpringArmComponent; 
+	USpringArmComponent* SpringArmComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	USInteractionComponent* InteractionComponent;
 
 	virtual void BeginPlay() override; // works like a start method in unity
 	
 	void MoveForward(float value); // my methhods
 	void MoveRight(float value);
 	void PrimaryAttack();
+	void PrimaryInteract();
 
 public:	
 	virtual void Tick(float DeltaTime) override; // works like an update method in unity
