@@ -1,11 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "SCharacter.h"
+#include "SInputDataConfig.h"
 #include "ActionRoguelike/Public/SCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "SInteractionComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInput/Public/EnhancedInputComponent.h"
+#include "InputActionValue.h"
 
 ASCharacter::ASCharacter() // constructor
 {
@@ -39,7 +44,7 @@ void ASCharacter::Tick(float DeltaTime)  // unity update method
 
 void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) // here we bind an input
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	/*Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ASCharacter::MoveRight);
@@ -49,6 +54,22 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
+	*/
+	
+	APlayerController* PC = Cast<APlayerController>(GetController());
+ 
+	// Get the local player subsystem
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
+	// Clear out existing mapping, and add our mapping
+	Subsystem->ClearAllMappings();
+	Subsystem->AddMappingContext(InputMappingContext, 0);
+
+	UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	
+	PEI->BindAction(InputDataConfig->InputMove, ETriggerEvent::Triggered, this, &ASCharacter::Move);
+	
+	PEI->BindAction(InputDataConfig->InputLookUpDown, ETriggerEvent::Triggered, this, &ASCharacter::LookUpDown);
+	PEI->BindAction(InputDataConfig->InputLookLeftRight, ETriggerEvent::Triggered, this, &ASCharacter::LookLeftRight);
 }
 
 void ASCharacter::MoveForward(float value)
@@ -75,6 +96,66 @@ void ASCharacter::MoveRight(float value)
 	FVector rightVector = FRotationMatrix(controlRotation).GetScaledAxis(EAxis::Y); // if there a kismetmathlibrary, this is a part of blueprint math
 	
 	AddMovementInput(rightVector, value);
+}
+
+void ASCharacter::Move(const FInputActionValue& value)
+{
+	if (Controller == nullptr)
+		return;
+
+	const FVector2D moveValue = value.Get<FVector2D>();
+	FRotator controlRotation = GetControlRotation();
+	
+	controlRotation.Pitch = 0.0f;
+	controlRotation.Roll = 0.0f;
+
+	const FVector rightVector = FRotationMatrix(controlRotation).GetScaledAxis(EAxis::Y); // if there a kismetmathlibrary, this is a part of blueprint math
+
+	if (moveValue.Y != 0.0f)
+		AddMovementInput(controlRotation.Vector(), moveValue.Y);
+	
+	if (moveValue.X != 0.0f)
+		AddMovementInput(rightVector, moveValue.X);
+}
+
+void ASCharacter::Look(const FInputActionValue& value)
+{
+	if (Controller == nullptr)
+		return;
+
+	const FVector2D lookValue = value.Get<FVector2D>();
+
+	if (lookValue.X != 0.0f)
+		AddControllerYawInput(lookValue.X);
+	
+	if (lookValue.Y != 0.0f)
+		AddControllerPitchInput(lookValue.Y);
+}
+
+void ASCharacter::LookUpDown(const FInputActionValue& value)
+{
+	if (Controller == nullptr)
+		return;
+
+	const float lookValue = value.Get<float>();
+
+	if (lookValue == 0.0f)
+		return;
+	
+	AddControllerPitchInput(lookValue);
+}
+
+void ASCharacter::LookLeftRight(const FInputActionValue& value)
+{
+	if (Controller == nullptr)
+		return;
+
+	const float lookValue = value.Get<float>();
+
+	if (lookValue == 0.0f)
+		return;
+	
+	AddControllerYawInput(lookValue);
 }
 
 void ASCharacter::PrimaryAttack()

@@ -1,11 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "SInteractionComponent.h"
 #include "GameFramework/Character.h"
+#include "InputActionValue.h"
 #include "SCharacter.generated.h"
+
 
 class UCameraComponent;
 class USpringArmComponent;
@@ -34,6 +35,15 @@ public:
 
 protected:
 
+	virtual void BeginPlay() override; // works like a start method in unity
+
+public:	
+	virtual void Tick(float DeltaTime) override; // works like an update method in unity
+
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // here we bind all input
+
+protected:
+	
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComponent;
 	
@@ -43,17 +53,19 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	USInteractionComponent* InteractionComponent;
 
-	virtual void BeginPlay() override; // works like a start method in unity
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
+	class USInputDataConfig* InputDataConfig;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " Enhanced Input ")
+	class UInputMappingContext* InputMappingContext;
+
 	void MoveForward(float value); // my methhods
 	void MoveRight(float value);
+	void Move(const FInputActionValue& value);
+	void Look(const FInputActionValue& value);
+	void LookUpDown(const FInputActionValue& value);
+	void LookLeftRight(const FInputActionValue& value);
 	void PrimaryAtackTimeElapsed();
 	void PrimaryAttack();
 	void PrimaryInteract();
-
-public:	
-	virtual void Tick(float DeltaTime) override; // works like an update method in unity
-
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // here we bind all input
-
 };
