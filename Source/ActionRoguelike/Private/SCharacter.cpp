@@ -67,9 +67,12 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	
 	PEI->BindAction(InputDataConfig->InputMove, ETriggerEvent::Triggered, this, &ASCharacter::Move);
+	PEI->BindAction(InputDataConfig->Jump, ETriggerEvent::Started, this, &ASCharacter::Jump);
 	
 	PEI->BindAction(InputDataConfig->InputLookUpDown, ETriggerEvent::Triggered, this, &ASCharacter::LookUpDown);
 	PEI->BindAction(InputDataConfig->InputLookLeftRight, ETriggerEvent::Triggered, this, &ASCharacter::LookLeftRight);
+	
+	PEI->BindAction(InputDataConfig->Attack, ETriggerEvent::Started, this, &ASCharacter::PrimaryAttack);
 }
 
 void ASCharacter::MoveForward(float value)
