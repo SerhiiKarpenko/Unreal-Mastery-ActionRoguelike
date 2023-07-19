@@ -29,6 +29,7 @@ ASCharacter::ASCharacter() // constructor
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
+	ProjectileFactory = CreateDefaultSubobject<USProjectileFactory>("Projectile Factory");
 }
 
 void ASCharacter::BeginPlay() // unit start method
@@ -170,7 +171,7 @@ void ASCharacter::PrimaryAttackTimeElapsed()
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParameters.Instigator = this;
 	
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTransformMatrix, SpawnParameters);
+	ProjectileFactory->CreateMagic(SpawnTransformMatrix, SpawnParameters);
 }
 
 void ASCharacter::PrimaryInteract()
@@ -180,6 +181,18 @@ void ASCharacter::PrimaryInteract()
 	
 	//InteractionComponent->PrimaryInteract();
 	InteractionComponent->SecondInteract();
+}
+
+void ASCharacter::BlackHoleAttack()
+{
+	const FVector handLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
+	
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParameters.Instigator = this;
+	
+	ProjectileFactory->CreateBlackHole(SpawnTransformMatrix, SpawnParameters);
 }
 
 FRotator ASCharacter::CalculateDirectionForProjectile(FVector startProjectilePosition)

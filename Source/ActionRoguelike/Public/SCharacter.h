@@ -5,6 +5,7 @@
 #include "SInteractionComponent.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "SProjectileFactory.h"
 #include "SCharacter.generated.h"
 
 
@@ -59,6 +60,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " Enhanced Input ")
 	class UInputMappingContext* InputMappingContext;
 
+	UPROPERTY(VisibleAnywhere, Category = "Projectile Factory")
+	class USProjectileFactory* ProjectileFactory;
+
 	void MoveForward(float value);
 	void MoveRight(float value);
 	void Move(const FInputActionValue& value);
@@ -67,6 +71,7 @@ protected:
 	void LookLeftRight(const FInputActionValue& value);
 	void PrimaryAttackTimeElapsed();
 	void PrimaryAttack();
+	void BlackHoleAttack();
 	void PrimaryInteract();
 	FRotator CalculateDirectionForProjectile(FVector startProjectilePosition);
 };
