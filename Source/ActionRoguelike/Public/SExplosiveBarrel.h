@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "SExplosiveBarrel.generated.h"
 
 class UStaticMeshComponent;
@@ -15,8 +17,12 @@ UCLASS()
 class ACTIONROGUELIKE_API ASExplosiveBarrel : public AActor
 {
 	GENERATED_BODY()
+	
 
 protected:
+
+	UPROPERTY(EditAnywhere, Category = "Particles to create on destroy")
+	class UParticleSystem* ParticleSystem;
 	
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* StaticMeshComponent;
