@@ -11,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "InputActionValue.h"
+#include "GenericPlatform/GenericPlatformCrashContext.h"
 
 ASCharacter::ASCharacter() // constructor
 {
@@ -153,18 +154,17 @@ void ASCharacter::PrimaryAttack()
 {
 	PlayAnimMontage(AtackAniamtion);
 
-	GetWorldTimerManager().SetTimer(TimerHandlePrimaryAttack, this, &ASCharacter::PrimaryAtackTimeElapsed, 0.2f);
+	GetWorldTimerManager().SetTimer(TimerHandlePrimaryAttack, this, &ASCharacter::PrimaryAttackTimeElapsed, 0.2f);
 
 	//this one is stopping attack timer, for exmp if player died we just clearing the timer
 	//GetWorldTimerManager().ClearTimer(TimerHandlePrimaryAttack); 
 	
 }
 
-void ASCharacter::PrimaryAtackTimeElapsed()
+void ASCharacter::PrimaryAttackTimeElapsed()
 {
-	FVector handLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-	FTransform SpawnTransformMatrix = FTransform(GetControlRotation(),handLocation);
+	const FVector handLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
 	
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -180,6 +180,41 @@ void ASCharacter::PrimaryInteract()
 	
 	//InteractionComponent->PrimaryInteract();
 	InteractionComponent->SecondInteract();
+}
+
+FRotator ASCharacter::CalculateDirectionForProjectile(FVector startProjectilePosition)
+{
+	APlayerController* playerController = Cast<APlayerController>(Controller);
+	
+	FCollisionObjectQueryParams objectParameters;
+	objectParameters.AddObjectTypesToQuery(ECC_WorldStatic);
+	objectParameters.AddObjectTypesToQuery(ECC_WorldDynamic);
+
+	TArray<FHitResult> hitResults;
+	
+	FVector start = playerController->PlayerCameraManager->GetCameraLocation();
+	FVector end = start + (playerController->PlayerCameraManager->GetCameraRotation().Vector() * 10000);
+
+	if (hitResults.IsEmpty())
+	{
+		FVector direction = end - startProjectilePosition;
+		direction.Normalize();
+		
+		return direction.Rotation();
+	}
+	
+	for(FHitResult hit : hitResults)
+	{
+		FVector direction = hit.ImpactPoint - startProjectilePosition;
+		direction.Normalize();
+		
+		return direction.Rotation();
+	}
+
+	FVector direction = end - startProjectilePosition;
+	direction.Normalize();
+		
+	return  direction.Rotation();
 }
 
 

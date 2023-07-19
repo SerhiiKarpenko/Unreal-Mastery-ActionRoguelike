@@ -25,8 +25,6 @@ ASMagicProjectile::ASMagicProjectile()
 	ProjectileMovementComponent->InitialSpeed = 1000.0f;
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
 	ProjectileMovementComponent->bInitialVelocityInLocalSpace = true;
-
-	
 }
 
 void ASMagicProjectile::BeginPlay()

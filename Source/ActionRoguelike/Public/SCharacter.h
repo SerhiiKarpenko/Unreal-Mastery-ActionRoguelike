@@ -59,13 +59,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " Enhanced Input ")
 	class UInputMappingContext* InputMappingContext;
 
-	void MoveForward(float value); // my methhods
+	void MoveForward(float value);
 	void MoveRight(float value);
 	void Move(const FInputActionValue& value);
 	void Look(const FInputActionValue& value);
 	void LookUpDown(const FInputActionValue& value);
 	void LookLeftRight(const FInputActionValue& value);
-	void PrimaryAtackTimeElapsed();
+	void PrimaryAttackTimeElapsed();
 	void PrimaryAttack();
 	void PrimaryInteract();
+	FRotator CalculateDirectionForProjectile(FVector startProjectilePosition);
 };
