@@ -27,8 +27,7 @@ void ASBlackHoleProjectile::DestroyObjects(UPrimitiveComponent* OverlappedCompon
 void ASBlackHoleProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//ProjectileSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ASBlackHoleProjectile::DestroyObjects);
+	ProjectileSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ASBlackHoleProjectile::DestroyObjects);
 }
 
 void ASBlackHoleProjectile::Tick(float DeltaSeconds)
