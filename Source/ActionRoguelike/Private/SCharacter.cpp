@@ -62,6 +62,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	EnhancedInputComponent->BindAction(InputDataConfig->InputLookUpDown, ETriggerEvent::Triggered, this, &ASCharacter::LookUpDown);
 	EnhancedInputComponent->BindAction(InputDataConfig->InputLookLeftRight, ETriggerEvent::Triggered, this, &ASCharacter::LookLeftRight);
 	EnhancedInputComponent->BindAction(InputDataConfig->Attack, ETriggerEvent::Started, this, &ASCharacter::PrimaryAttack);
+	EnhancedInputComponent->BindAction(InputDataConfig->BlackHoleAttack, ETriggerEvent::Started, this, &ASCharacter::BlackHoleAttack);
 	EnhancedInputComponent->BindAction(InputDataConfig->Interact, ETriggerEvent::Started, this, &ASCharacter::PrimaryInteract);
 }
 

@@ -33,6 +33,9 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInputAction* Attack;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UInputAction* BlackHoleAttack;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	const UInputAction* Interact;
