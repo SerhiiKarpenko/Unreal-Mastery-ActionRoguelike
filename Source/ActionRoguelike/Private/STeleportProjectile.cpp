@@ -35,8 +35,6 @@ void ASTeleportProjectile::StopMovement()
 
 void ASTeleportProjectile::StopProjectile()
 {
-	UE_LOG(LogTemp, Log, TEXT("Stop Projectile"))
-	
 	StopMovement();
 	SpawnExplosionParticles();
 	GetWorldTimerManager().SetTimer(TeleportHandle, this, &ASTeleportProjectile::TeleportPlayerToEndPosition, 0.2f);
@@ -50,8 +48,6 @@ void ASTeleportProjectile::TeleportPlayerToEndPosition()
 
 void ASTeleportProjectile::TeleportImmediately(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Log, TEXT("Teleport Immediately"))
-	
 	GetWorldTimerManager().ClearTimer(DestroyHandle);
 	GetWorldTimerManager().ClearTimer(TeleportHandle);
 	SpawnExplosionParticles();
@@ -60,7 +56,6 @@ void ASTeleportProjectile::TeleportImmediately(UPrimitiveComponent* HitComponent
 
 void ASTeleportProjectile::SpawnExplosionParticles()
 {
-	//UGameplayStatics::SpawnEmitterAtLocation(this, particlesToSpawnOnStopOrDestroy, GetActorLocation(), GetActorRotation());
 	particlesToActivateOnStopOrDestroy->Activate();
 }
 
