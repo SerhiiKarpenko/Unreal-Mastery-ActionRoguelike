@@ -11,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "InputActionValue.h"
+#include "SAttributeComponent.h"
 #include "GenericPlatform/GenericPlatformCrashContext.h"
 
 ASCharacter::ASCharacter() // constructor
@@ -30,6 +31,7 @@ ASCharacter::ASCharacter() // constructor
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	ProjectileFactory = CreateDefaultSubobject<USProjectileFactory>("Projectile Factory");
+	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>("Attributes Component");
 }
 
 void ASCharacter::BeginPlay() // unit start method

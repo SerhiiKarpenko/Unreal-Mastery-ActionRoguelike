@@ -8,7 +8,6 @@
 #include "SProjectileFactory.h"
 #include "SCharacter.generated.h"
 
-
 class UCameraComponent;
 class USpringArmComponent;
 class USInteractionComponent;
@@ -62,6 +61,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Projectile Factory")
 	class USProjectileFactory* ProjectileFactory;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attributes")
+	class USAttributeComponent* AttributeComponent;
 
 	void MoveForward(float value);
 	void MoveRight(float value);

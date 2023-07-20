@@ -1,6 +1,8 @@
 
 
 #include "SMagicProjectile.h"
+
+#include "SAttributeComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 
@@ -15,6 +17,7 @@ ASMagicProjectile::ASMagicProjectile()
 	//SphereComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	
 	SphereComponent->SetCollisionProfileName("Projectile");
+	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ASMagicProjectile::OnOverlapWithActor);
 	
 	RootComponent = SphereComponent;
 
@@ -37,5 +40,25 @@ void ASMagicProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ASMagicProjectile::OnOverlapWithActor(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	if (OtherActor == nullptr)
+		return;
+
+	USAttributeComponent* actorsAttributes = Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
+
+	if (actorsAttributes == nullptr)
+		return;
+
+	actorsAttributes->ApplyDamage(-20.0);
+	Destroy();
 }
 
