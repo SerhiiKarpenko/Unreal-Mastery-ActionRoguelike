@@ -41,4 +41,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Particles To Create On End")
 	class UParticleSystemComponent* particlesToActivateOnStopOrDestroy;
+	
+	UPROPERTY(EditAnywhere, Category = "Particles To Create On End")
+	class UParticleSystemComponent* particlesToActivateOnStart;
 };

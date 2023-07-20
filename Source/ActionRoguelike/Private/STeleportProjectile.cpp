@@ -13,6 +13,9 @@ ASTeleportProjectile::ASTeleportProjectile()
 	particlesToActivateOnStopOrDestroy = CreateDefaultSubobject<UParticleSystemComponent>("Particles System Component To Create On End");
 	particlesToActivateOnStopOrDestroy->SetupAttachment(ProjectileSphereComponent);
 	
+	particlesToActivateOnStart = CreateDefaultSubobject<UParticleSystemComponent>("Particles System Component To Create Start");
+	particlesToActivateOnStart->SetupAttachment(ProjectileSphereComponent);
+	
 	ProjectileMovementComponent->InitialSpeed = 1500.0f;
 }
 
