@@ -72,6 +72,8 @@ protected:
 	void PrimaryAttackTimeElapsed();
 	void PrimaryAttack();
 	void BlackHoleAttack();
+	void TeleportElapsed();
+	void Teleport();
 	void PrimaryInteract();
 	FRotator CalculateDirectionForProjectile(FVector startProjectilePosition);
 };

@@ -38,5 +38,8 @@ public:
 	UInputAction* BlackHoleAttack;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UInputAction* Teleport;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	const UInputAction* Interact;
 };

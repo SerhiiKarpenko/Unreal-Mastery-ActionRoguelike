@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Components/SphereComponent.h"
 #include "SBlackHoleProjectile.h"
+#include "Components/SphereComponent.h"
 #include "SBaseProjectile.h"
 
 ASBlackHoleProjectile::ASBlackHoleProjectile()

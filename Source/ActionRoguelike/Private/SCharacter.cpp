@@ -63,6 +63,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	EnhancedInputComponent->BindAction(InputDataConfig->InputLookLeftRight, ETriggerEvent::Triggered, this, &ASCharacter::LookLeftRight);
 	EnhancedInputComponent->BindAction(InputDataConfig->Attack, ETriggerEvent::Started, this, &ASCharacter::PrimaryAttack);
 	EnhancedInputComponent->BindAction(InputDataConfig->BlackHoleAttack, ETriggerEvent::Started, this, &ASCharacter::BlackHoleAttack);
+	EnhancedInputComponent->BindAction(InputDataConfig->Teleport, ETriggerEvent::Started, this, &ASCharacter::Teleport);
 	EnhancedInputComponent->BindAction(InputDataConfig->Interact, ETriggerEvent::Started, this, &ASCharacter::PrimaryInteract);
 }
 
@@ -194,6 +195,25 @@ void ASCharacter::BlackHoleAttack()
 	SpawnParameters.Instigator = this;
 	
 	ProjectileFactory->CreateBlackHole(SpawnTransformMatrix, SpawnParameters);
+}
+
+void ASCharacter::Teleport()
+{
+	PlayAnimMontage(AtackAniamtion);
+
+	GetWorldTimerManager().SetTimer(TimerHandlePrimaryAttack, this, &ASCharacter::TeleportElapsed, 0.2f);
+}
+
+void ASCharacter::TeleportElapsed()
+{
+	const FVector handLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
+	
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParameters.Instigator = this;
+	
+	ProjectileFactory->CreateTeleport(SpawnTransformMatrix, SpawnParameters);
 }
 
 FRotator ASCharacter::CalculateDirectionForProjectile(FVector startProjectilePosition)

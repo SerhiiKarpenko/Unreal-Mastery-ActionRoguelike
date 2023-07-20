@@ -23,8 +23,12 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category= "Projectiles To Create")
 	TSubclassOf<AActor> BlackHoleProjectile;
+	
+	UPROPERTY(EditAnywhere, Category= "Projectiles To Create")
+	TSubclassOf<AActor> TeleportProjectile;
 
 public:
 	AActor* CreateBlackHole(FTransform spawnPositionAndRotation, FActorSpawnParameters spawnParameters);
 	AActor* CreateMagic(FTransform spawnPositionAndRotation, FActorSpawnParameters spawnParameters);
+	AActor* CreateTeleport(FTransform spawnPositionAndRotation, FActorSpawnParameters spawnParameters);
 };
