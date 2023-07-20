@@ -15,6 +15,7 @@ ASBlackHoleProjectile::ASBlackHoleProjectile()
 	RadialForceComponent->RemoveObjectTypeToAffect(ObjectTypeQuery3);
 
 	ProjectileSphereComponent->SetCollisionProfileName("BlackHole");
+	ProjectileMovementComponent->InitialSpeed = 500.0f;
 }
 
 
