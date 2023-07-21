@@ -3,6 +3,7 @@
 
 #include "SExplosiveBarrel.h"
 #include "DrawDebugHelpers.h"
+#include "SAttributeComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h"
@@ -34,6 +35,12 @@ void ASExplosiveBarrel::OnHit(
 	const FHitResult& Hit)
 {
 	RadialForceComponent->FireImpulse();
+	USAttributeComponent* attributesOfAnotherActor =
+		Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
+
+	if (attributesOfAnotherActor != nullptr)
+		attributesOfAnotherActor->ApplyDamage(-30.0f);
+	
 	UGameplayStatics::SpawnEmitterAtLocation(this, ParticleSystem, GetActorLocation(), GetActorRotation());
 	
 	UE_LOG(LogTemp, Log, TEXT("OnActorHit in Explosive Barrel"));
