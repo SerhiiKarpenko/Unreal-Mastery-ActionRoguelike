@@ -5,6 +5,13 @@
 #include "Components/ActorComponent.h"
 #include "SAttributeComponent.generated.h"
 
+// events
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(
+	FOnHealthChanged, // name of the delegate (event)
+	AActor*, instigatorActor,
+	USAttributeComponent* , owningComponent,
+	float, newHealth,
+	float, healthChange);  
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ACTIONROGUELIKE_API USAttributeComponent : public UActorComponent
@@ -33,6 +40,10 @@ protected:
 	//MaxHealth, Stamina, Strength
 
 public:
+
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthChanged OnHealthChanged;
+	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyDamage(float damageToApply);
 	

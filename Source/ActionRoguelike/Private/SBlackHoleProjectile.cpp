@@ -24,8 +24,13 @@ ASBlackHoleProjectile::ASBlackHoleProjectile()
 }
 
 
-void ASBlackHoleProjectile::DestroyObjects(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ASBlackHoleProjectile::DestroyObjects(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
 {
 	OtherActor->Destroy();
 }
