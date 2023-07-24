@@ -37,7 +37,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Attributes")
 	float Health;
-
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Attributes")
+	float MaxHealth;
 	//MaxHealth, Stamina, Strength
 
 public:
