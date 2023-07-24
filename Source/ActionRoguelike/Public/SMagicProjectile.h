@@ -42,6 +42,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* ParticleSystemComponent; // show something in the world
 
+	UPROPERTY(VisibleAnywhere)
+	UAudioComponent* AudioComponent;
+	
 public:	
 	virtual void Tick(float DeltaTime) override;
 

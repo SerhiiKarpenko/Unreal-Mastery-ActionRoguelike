@@ -35,7 +35,7 @@ protected:
 	// --
 	// Category = "" - display only for detail panels anb blueprint context menu
 	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Attributes")
 	float Health;
 
 	//MaxHealth, Stamina, Strength
