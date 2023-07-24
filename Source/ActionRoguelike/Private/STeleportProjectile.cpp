@@ -47,7 +47,7 @@ void ASTeleportProjectile::DeactivateEffectComponent()
 
 void ASTeleportProjectile::TeleportPlayerToEndPosition()
 {
-	GetInstigator()->TeleportTo(GetActorLocation(), GetInstigator()->GetActorRotation(), true, true);
+	GetInstigator()->TeleportTo(GetActorLocation(), GetInstigator()->GetActorRotation(), false, false);
 	Destroy();
 }
 

@@ -32,6 +32,9 @@ void ASBlackHoleProjectile::DestroyObjects(
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
+	if (!OtherComp->IsSimulatingPhysics())
+		return;
+	
 	OtherActor->Destroy();
 }
 

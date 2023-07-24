@@ -12,6 +12,9 @@ bool USAttributeComponent::ApplyDamage(float damageToApply)
 	
 	if (abs(damageToApply) >= Health)
 	{
+		if (IsAlive())
+			Die();
+		
 		Health = 0;
 		OnHealthChanged.Broadcast(nullptr, this, Health, damageToApply);
 		return false;
@@ -20,5 +23,17 @@ bool USAttributeComponent::ApplyDamage(float damageToApply)
 	Health += damageToApply;
 	OnHealthChanged.Broadcast(nullptr, this, Health, damageToApply);
 	return true;
+}
+
+
+bool USAttributeComponent::IsAlive() const
+{
+	return Health > 0.0f;
+}
+
+void USAttributeComponent::Die()
+{
+	OnDie.Broadcast();
+	isAlive = false;
 }
 

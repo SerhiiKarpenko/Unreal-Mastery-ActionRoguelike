@@ -46,6 +46,12 @@ void ASCharacter::Tick(float DeltaTime)  // unity update method
 
 }
 
+void ASCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	AttributeComponent->OnDie.AddDynamic(this, &ASCharacter::DisablePlayerInput);
+}
+
 void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) // here we bind an input
 {
 	APlayerController* PC = Cast<APlayerController>(GetController());
@@ -257,3 +263,8 @@ FRotator ASCharacter::CalculateDirectionForProjectile(FVector startProjectilePos
 }
 
 
+void ASCharacter::DisablePlayerInput()
+{
+	APlayerController* playerController = Cast<APlayerController>(GetController());
+	DisableInput(playerController);
+}

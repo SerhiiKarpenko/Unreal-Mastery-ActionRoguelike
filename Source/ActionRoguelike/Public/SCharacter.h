@@ -78,4 +78,9 @@ protected:
 	void Teleport();
 	void PrimaryInteract();
 	FRotator CalculateDirectionForProjectile(FVector startProjectilePosition);
+	
+	UFUNCTION()
+	void DisablePlayerInput();
+
+	virtual void PostInitializeComponents() override;
 };

@@ -13,6 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(
 	float, newHealth,
 	float, healthChange);  
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ACTIONROGUELIKE_API USAttributeComponent : public UActorComponent
 {
@@ -43,8 +44,18 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnDie OnDie;
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyDamage(float damageToApply);
-	
+
+	UFUNCTION(BlueprintCallable)
+	bool IsAlive() const;
+
+	void Die();
+
+private:
+	bool isAlive = true;
 };
