@@ -7,21 +7,18 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "SBaseProjectile.generated.h"
 
-UCLASS()
+UCLASS(ABSTRACT)
 class ACTIONROGUELIKE_API ASBaseProjectile : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ASBaseProjectile();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 protected:
@@ -35,4 +32,21 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	class UParticleSystemComponent* ProjectileParticleSystemComponent;
 
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* ParticleSystemToCreateOnDestroy;
+
+	UFUNCTION()
+	virtual void OnActorHit(
+	UPrimitiveComponent* HitComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse,
+	const FHitResult& Hit);
+
+	virtual void PostInitializeComponents() override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void DestroyOnCollision();
+
+	
 };

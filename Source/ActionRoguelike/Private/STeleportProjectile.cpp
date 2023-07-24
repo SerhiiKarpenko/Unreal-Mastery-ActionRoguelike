@@ -1,8 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "STeleportProjectile.h"
-
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
@@ -28,7 +24,7 @@ void ASTeleportProjectile::BeginPlay()
 void ASTeleportProjectile::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	ProjectileSphereComponent->OnComponentHit.AddDynamic(this, &ASTeleportProjectile::TeleportImmediately);
+	ProjectileSphereComponent->OnComponentHit.AddDynamic(this, &ASTeleportProjectile::OnActorHit);
 }
 
 void ASTeleportProjectile::StopMovement()
@@ -39,8 +35,14 @@ void ASTeleportProjectile::StopMovement()
 void ASTeleportProjectile::StopProjectile()
 {
 	StopMovement();
+	DeactivateEffectComponent();
 	SpawnExplosionParticles();
 	GetWorldTimerManager().SetTimer(TeleportHandle, this, &ASTeleportProjectile::TeleportPlayerToEndPosition, 0.2f);
+}
+
+void ASTeleportProjectile::DeactivateEffectComponent()
+{
+	ProjectileParticleSystemComponent->DeactivateSystem();
 }
 
 void ASTeleportProjectile::TeleportPlayerToEndPosition()
@@ -49,12 +51,23 @@ void ASTeleportProjectile::TeleportPlayerToEndPosition()
 	Destroy();
 }
 
-void ASTeleportProjectile::TeleportImmediately(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void ASTeleportProjectile::TeleportImmediately()
 {
 	GetWorldTimerManager().ClearTimer(DestroyHandle);
 	GetWorldTimerManager().ClearTimer(TeleportHandle);
+	DeactivateEffectComponent();
 	SpawnExplosionParticles();
 	GetWorldTimerManager().SetTimer(TeleportHandle, this, &ASTeleportProjectile::TeleportPlayerToEndPosition, 0.2f);
+}
+
+void ASTeleportProjectile::OnActorHit(
+	UPrimitiveComponent* HitComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse,
+	const FHitResult& Hit)
+{
+	TeleportImmediately();
 }
 
 void ASTeleportProjectile::SpawnExplosionParticles()

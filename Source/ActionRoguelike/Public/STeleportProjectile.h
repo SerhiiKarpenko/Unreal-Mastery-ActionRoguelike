@@ -19,16 +19,17 @@ public:
 	ASTeleportProjectile();
 
 protected:
-	UFUNCTION()
-	void TeleportImmediately(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	void TeleportImmediately();
 	
 	void SpawnExplosionParticles();
 	void TeleportPlayerToEndPosition();
 	void StopProjectile();
+	void DeactivateEffectComponent();
 	void StopMovement();
 	
 	virtual void BeginPlay() override;
 	virtual void PostInitializeComponents() override;
+	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) override;
 
 protected:
 	
