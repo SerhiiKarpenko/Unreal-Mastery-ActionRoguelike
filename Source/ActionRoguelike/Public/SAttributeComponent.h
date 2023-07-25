@@ -52,6 +52,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyDamage(float damageToApply);
+	bool Heal(float healToApply);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsAlive() const;

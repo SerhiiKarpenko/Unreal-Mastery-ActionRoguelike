@@ -25,6 +25,23 @@ bool USAttributeComponent::ApplyDamage(float damageToApply)
 	return true;
 }
 
+bool USAttributeComponent::Heal(float healToApply)
+{
+	if (Health == MaxHealth || !IsAlive())
+		return false;
+	
+	if(Health + healToApply >= MaxHealth)
+	{
+		Health = MaxHealth;
+		OnHealthChanged.Broadcast(nullptr, this, Health, healToApply);
+		return true;
+	}
+	
+	Health += healToApply;
+	OnHealthChanged.Broadcast(nullptr, this, Health, healToApply);
+	return true;
+}
+
 
 bool USAttributeComponent::IsAlive() const
 {

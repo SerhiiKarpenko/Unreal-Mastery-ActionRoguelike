@@ -1,27 +1,49 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "SHealthPotion.h"
+#include "SAttributeComponent.h"
 
-// Sets default values
+
 ASHealthPotion::ASHealthPotion()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-}
-
-// Called when the game starts or when spawned
-void ASHealthPotion::BeginPlay()
-{
-	Super::BeginPlay();
 	
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("Static Mesh Component");
+	RootComponent = StaticMeshComponent;
+
+	HealPower = 20.0f;
+	CanBeUsed = true;
 }
 
-// Called every frame
-void ASHealthPotion::Tick(float DeltaTime)
+void ASHealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 {
-	Super::Tick(DeltaTime);
+	if (!CanBeUsed)
+		return;
+	
+	Super::Interact_Implementation(InstigatorPawn);
+	Pickup_Implementation(InstigatorPawn);
+}
 
+void ASHealthPotion::Pickup_Implementation(APawn* InstigatorPawn)
+{
+	Super::Pickup_Implementation(InstigatorPawn);
+	USAttributeComponent* attributes = Cast<USAttributeComponent>(InstigatorPawn->GetComponentByClass(USAttributeComponent::StaticClass()));
+
+	if (attributes == nullptr)
+		return;
+	
+	if(!attributes->Heal(20.0f))
+		return;
+
+	CanBeUsed = false;
+	StaticMeshComponent->SetVisibility(false);
+
+	GetWorldTimerManager().SetTimer(RespawnHandle, this, &ASHealthPotion::Respawn_Implementation, 10);
+}
+
+void ASHealthPotion::Respawn_Implementation()
+{
+	ISRespawnableInterface::Respawn_Implementation();
+	
+	StaticMeshComponent->SetVisibility(true);
+	CanBeUsed = true;
 }
 
