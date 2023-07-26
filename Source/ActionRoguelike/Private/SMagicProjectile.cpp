@@ -53,15 +53,7 @@ void ASMagicProjectile::OnOverlapWithActor(
 	actorsAttributes->ApplyDamage(-20.0);
 	
 	AudioComponent->Stop();
-	APawn* player = GetInstigator();
-
-	if (player != nullptr)
-	{
-		UCameraComponent* ComponentByClass = Cast<UCameraComponent>(player->GetComponentByClass(UCameraComponent::StaticClass()));
-
-		if (ComponentByClass != nullptr)
-			UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, ComponentByClass->GetComponentLocation(), 50, 50);
-	}
+	UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, GetActorLocation(), 50, 50);
 	
 	AudioComponent->DestroyComponent();
 	
