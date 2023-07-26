@@ -18,6 +18,11 @@ AActor* USProjectileFactory::CreateMagic(FTransform spawnPositionAndRotation, FA
 	return GetWorld()->SpawnActor<AActor>(MagicProjectile, spawnPositionAndRotation, spawnParameters);
 }
 
+AActor* USProjectileFactory::CreateMagic(FVector spawnPosition, FRotator spawnRotation, FActorSpawnParameters spawnParameters)
+{
+	return GetWorld()->SpawnActor<AActor>(MagicProjectile, spawnPosition, spawnRotation, spawnParameters);
+}
+
 AActor* USProjectileFactory::CreateTeleport(FTransform spawnPositionAndRotation, FActorSpawnParameters spawnParameters)
 {
 	return GetWorld()->SpawnActor<AActor>(TeleportProjectile, spawnPositionAndRotation, spawnParameters);

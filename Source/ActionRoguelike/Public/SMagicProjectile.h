@@ -31,7 +31,7 @@ protected:
 		FHitResult& SweepResult
 		);
 	
-	virtual void BeginPlay() override;
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USphereComponent* SphereComponent; // collision component
@@ -49,6 +49,6 @@ protected:
 	class TSubclassOf<UCameraShakeBase> CameraShake;
 
 public:	
-	virtual void Tick(float DeltaTime) override;
+
 
 };

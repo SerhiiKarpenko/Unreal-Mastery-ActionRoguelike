@@ -30,5 +30,6 @@ protected:
 public:
 	AActor* CreateBlackHole(FTransform spawnPositionAndRotation, FActorSpawnParameters spawnParameters);
 	AActor* CreateMagic(FTransform spawnPositionAndRotation, FActorSpawnParameters spawnParameters);
+	AActor* CreateMagic(FVector spawnPosition, FRotator spawnRotation, FActorSpawnParameters spawnParameters);
 	AActor* CreateTeleport(FTransform spawnPositionAndRotation, FActorSpawnParameters spawnParameters);
 };

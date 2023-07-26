@@ -33,16 +33,6 @@ ASMagicProjectile::ASMagicProjectile()
 	AudioComponent->SetupAttachment(SphereComponent);
 }
 
-void ASMagicProjectile::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-void ASMagicProjectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
 
 void ASMagicProjectile::OnOverlapWithActor(
 	UPrimitiveComponent* OverlappedComponent,
@@ -65,10 +55,13 @@ void ASMagicProjectile::OnOverlapWithActor(
 	AudioComponent->Stop();
 	APawn* player = GetInstigator();
 
-	UCameraComponent* ComponentByClass = Cast<UCameraComponent>(player->GetComponentByClass(UCameraComponent::StaticClass()));
+	if (player != nullptr)
+	{
+		UCameraComponent* ComponentByClass = Cast<UCameraComponent>(player->GetComponentByClass(UCameraComponent::StaticClass()));
 
-	if (ComponentByClass != nullptr)
-		UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, ComponentByClass->GetComponentLocation(), 50, 50);
+		if (ComponentByClass != nullptr)
+			UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, ComponentByClass->GetComponentLocation(), 50, 50);
+	}
 	
 	AudioComponent->DestroyComponent();
 	
