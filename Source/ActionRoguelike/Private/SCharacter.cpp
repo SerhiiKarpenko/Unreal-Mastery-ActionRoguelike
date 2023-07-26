@@ -180,7 +180,8 @@ void ASCharacter::PrimaryAttackTimeElapsed()
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParameters.Instigator = this;
-	
+
+	OnSpellCast.Broadcast();
 	ProjectileFactory->CreateMagic(SpawnTransformMatrix, SpawnParameters);
 }
 
@@ -220,7 +221,8 @@ void ASCharacter::TeleportElapsed()
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParameters.Instigator = this;
-	
+
+	OnSpellCast.Broadcast();
 	ProjectileFactory->CreateTeleport(SpawnTransformMatrix, SpawnParameters);
 }
 

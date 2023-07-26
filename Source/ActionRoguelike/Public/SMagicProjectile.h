@@ -44,7 +44,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UAudioComponent* AudioComponent;
-	
+
+	UPROPERTY(EditAnywhere)
+	class TSubclassOf<UCameraShakeBase> CameraShake;
+
 public:	
 	virtual void Tick(float DeltaTime) override;
 

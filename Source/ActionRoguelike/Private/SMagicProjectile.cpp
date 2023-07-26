@@ -1,5 +1,6 @@
 #include "SMagicProjectile.h"
 #include "SAttributeComponent.h"
+#include "Camera/CameraComponent.h"
 #include "Components/AudioComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -62,6 +63,13 @@ void ASMagicProjectile::OnOverlapWithActor(
 	actorsAttributes->ApplyDamage(-20.0);
 	
 	AudioComponent->Stop();
+	APawn* player = GetInstigator();
+
+	UCameraComponent* ComponentByClass = Cast<UCameraComponent>(player->GetComponentByClass(UCameraComponent::StaticClass()));
+
+	if (ComponentByClass != nullptr)
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, ComponentByClass->GetComponentLocation(), 50, 50);
+	
 	AudioComponent->DestroyComponent();
 	
 	Destroy();

@@ -13,6 +13,8 @@ class USpringArmComponent;
 class USInteractionComponent;
 class UAnimMontage;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSpellCast);
+
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 {
@@ -43,6 +45,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // here we bind all input
 
 protected:
+
+	UPROPERTY(BlueprintAssignable)
+	FOnSpellCast OnSpellCast;
 	
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComponent;
