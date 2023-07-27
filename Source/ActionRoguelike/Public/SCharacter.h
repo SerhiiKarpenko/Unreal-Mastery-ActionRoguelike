@@ -22,12 +22,19 @@ class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 
 protected:
 
-	UPROPERTY(EditAnywhere, Category = "Atack") // give as a possibility to change it anywhere we want,
+	UPROPERTY(EditAnywhere, Category = "Attack") // give as a possibility to change it anywhere we want,
 	TSubclassOf<AActor> ProjectileClass; // give as a field where we can pass the reference to another class,
 
-	UPROPERTY(EditAnywhere, Category = "Atack")
+	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AtackAniamtion;
 	FTimerHandle TimerHandlePrimaryAttack;
+	
+	UPROPERTY(VisibleAnywhere, Category= "Attack")
+	
+	FName HandSocketName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
+	class UParticleSystem* CastingEffect;
 
 public:
 	// Sets default values for this character's properties

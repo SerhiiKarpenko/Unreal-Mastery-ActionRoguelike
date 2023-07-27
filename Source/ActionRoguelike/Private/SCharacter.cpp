@@ -13,6 +13,7 @@
 #include "InputActionValue.h"
 #include "SAttributeComponent.h"
 #include "GenericPlatform/GenericPlatformCrashContext.h"
+#include "Kismet/GameplayStatics.h"
 
 ASCharacter::ASCharacter() // constructor
 {
@@ -32,7 +33,10 @@ ASCharacter::ASCharacter() // constructor
 
 	ProjectileFactory = CreateDefaultSubobject<USProjectileFactory>("Projectile Factory");
 	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>("Attributes Component");
+
+	HandSocketName = "Muzzle_01";
 }
+
 
 void ASCharacter::BeginPlay() // unit start method
 {
@@ -165,6 +169,8 @@ void ASCharacter::PrimaryAttack()
 {
 	PlayAnimMontage(AtackAniamtion);
 
+	UGameplayStatics::SpawnEmitterAttached(CastingEffect, GetMesh(), HandSocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
+	
 	GetWorldTimerManager().SetTimer(TimerHandlePrimaryAttack, this, &ASCharacter::PrimaryAttackTimeElapsed, 0.2f);
 
 	//this one is stopping attack timer, for exmp if player died we just clearing the timer
@@ -174,7 +180,7 @@ void ASCharacter::PrimaryAttack()
 
 void ASCharacter::PrimaryAttackTimeElapsed()
 {
-	const FVector handLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	const FVector handLocation = GetMesh()->GetSocketLocation(HandSocketName);
 	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
 	
 	FActorSpawnParameters SpawnParameters;
@@ -196,7 +202,7 @@ void ASCharacter::PrimaryInteract()
 
 void ASCharacter::BlackHoleAttack()
 {
-	const FVector handLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	const FVector handLocation = GetMesh()->GetSocketLocation(HandSocketName);
 	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
 	
 	FActorSpawnParameters SpawnParameters;
@@ -215,7 +221,7 @@ void ASCharacter::Teleport()
 
 void ASCharacter::TeleportElapsed()
 {
-	const FVector handLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	const FVector handLocation = GetMesh()->GetSocketLocation(HandSocketName);
 	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
 	
 	FActorSpawnParameters SpawnParameters;
