@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SAttributeComponent.h"
 #include "GameFramework/Character.h"
 #include "Perception/PawnSensingComponent.h"
 #include "SAICharacter.generated.h"
@@ -19,6 +20,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UPawnSensingComponent* PawnSensingComponent;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Components")
+	class USAttributeComponent* AttributeComponent;
 
 	virtual void PostInitializeComponents() override;
 

@@ -1,10 +1,14 @@
 #include "SGameModeBase.h"
+
+#include "EngineUtils.h"
+#include "SAttributeComponent.h"
+#include "AI/SAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 #include "EnvironmentQuery/EnvQueryTypes.h"
 
 ASGameModeBase::ASGameModeBase()
 {
-	SpawnTimerInterval = 2;
+	SpawnTimerInterval = 10;
 }
 
 void ASGameModeBase::StartPlay()
@@ -25,10 +29,27 @@ void ASGameModeBase::SpawnBotTimerElapsed()
 
 void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance,EEnvQueryStatus::Type QueryStatus)
 {
+	
 	if (QueryStatus == EEnvQueryStatus::Failed)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Spawn bot EQS query failed!"));
 		return;
+	}
+
+	int32 numberOfAliveBots = 0;
+	for (TActorIterator<ASAICharacter> It(GetWorld()); It; ++It)
+	{
+		ASAICharacter* bot = *It;
+
+		USAttributeComponent* AttributeComponent = Cast<USAttributeComponent>(bot->GetComponentByClass(USAttributeComponent::StaticClass()));
+		
+		if (AttributeComponent != nullptr && AttributeComponent->IsAlive())
+			numberOfAliveBots++;
+		
+		const float MaxBotCount = 10.0f;
+
+		if (numberOfAliveBots >= MaxBotCount)
+			return;
 	}
 	
 	TArray<FVector> locations = QueryInstance->GetResultsAsLocations();

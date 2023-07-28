@@ -8,12 +8,15 @@ ASAICharacter::ASAICharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>("Pawn Sensing Component");
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>("Attribute Component");
 }
 
 void ASAICharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	PawnSensingComponent->OnSeePawn.AddDynamic(this, &ASAICharacter::OnPawnSeen);
+	
 }
 
 void ASAICharacter::OnPawnSeen(APawn* Pawn)
