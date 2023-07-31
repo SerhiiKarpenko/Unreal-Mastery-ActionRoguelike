@@ -39,7 +39,7 @@ void ASExplosiveBarrel::OnHit(
 		Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
 
 	if (attributesOfAnotherActor != nullptr)
-		attributesOfAnotherActor->ApplyDamage(-30.0f);
+		attributesOfAnotherActor->ApplyDamage(GetInstigator(), -30.0f);
 	
 	UGameplayStatics::SpawnEmitterAtLocation(this, ParticleSystem, GetActorLocation(), GetActorRotation());
 	

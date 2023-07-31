@@ -25,7 +25,7 @@ ASMagicProjectile::ASMagicProjectile()
 	ParticleSystemComponent->SetupAttachment(SphereComponent);
 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("Projectile Movement Component");
-	ProjectileMovementComponent->InitialSpeed = 1000.0f;
+	ProjectileMovementComponent->InitialSpeed = 2000.0f;
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
 	ProjectileMovementComponent->bInitialVelocityInLocalSpace = true;
 
@@ -50,7 +50,7 @@ void ASMagicProjectile::OnOverlapWithActor(
 	if (actorsAttributes == nullptr)
 		return;
 
-	actorsAttributes->ApplyDamage(-20.0);
+	actorsAttributes->ApplyDamage(GetInstigator(), -20.0);
 	
 	AudioComponent->Stop();
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, GetActorLocation(), 50, 50);

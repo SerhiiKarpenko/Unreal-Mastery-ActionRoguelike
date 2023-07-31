@@ -77,6 +77,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attributes")
 	class USAttributeComponent* AttributeComponent;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Collision Chanels")
+	TEnumAsByte<ECollisionChannel> ProjectileCollisionChanel;
+	
 	void MoveForward(float value);
 	void MoveRight(float value);
 	void Move(const FInputActionValue& value);

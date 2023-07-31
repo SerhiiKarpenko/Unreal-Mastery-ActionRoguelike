@@ -18,6 +18,8 @@ public:
 
 protected:
 
+	void SetTarget(AActor* newTarget);
+	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UPawnSensingComponent* PawnSensingComponent;
 
@@ -25,6 +27,13 @@ protected:
 	class USAttributeComponent* AttributeComponent;
 
 	virtual void PostInitializeComponents() override;
+
+	UFUNCTION()
+	void DamageTaken(AActor* InstigatorActor, USAttributeComponent* OwningComponent, float NewHealth, float HealthChange);
+	
+	UFUNCTION()
+	void OnDie();
+	
 
 	
 	UFUNCTION()

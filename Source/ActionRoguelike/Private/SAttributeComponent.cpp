@@ -5,7 +5,7 @@ USAttributeComponent::USAttributeComponent()
 	Health = 100;
 }
 
-bool USAttributeComponent::ApplyDamage(float damageToApply)
+bool USAttributeComponent::ApplyDamage(AActor* instigatorActor, float damageToApply)
 {
 	if (Health <= 0)
 		return false;
@@ -16,16 +16,16 @@ bool USAttributeComponent::ApplyDamage(float damageToApply)
 			Die();
 		
 		Health = 0;
-		OnHealthChanged.Broadcast(nullptr, this, Health, damageToApply);
+		OnHealthChanged.Broadcast(instigatorActor, this, Health, damageToApply);
 		return false;
 	}
 	
 	Health += damageToApply;
-	OnHealthChanged.Broadcast(nullptr, this, Health, damageToApply);
+	OnHealthChanged.Broadcast(instigatorActor, this, Health, damageToApply);
 	return true;
 }
 
-bool USAttributeComponent::Heal(float healToApply)
+bool USAttributeComponent::Heal(AActor* InstigatorActor ,float healToApply)
 {
 	if (Health == MaxHealth || !IsAlive())
 		return false;
@@ -33,12 +33,12 @@ bool USAttributeComponent::Heal(float healToApply)
 	if(Health + healToApply >= MaxHealth)
 	{
 		Health = MaxHealth;
-		OnHealthChanged.Broadcast(nullptr, this, Health, healToApply);
+		OnHealthChanged.Broadcast(InstigatorActor, this, Health, healToApply);
 		return true;
 	}
 	
 	Health += healToApply;
-	OnHealthChanged.Broadcast(nullptr, this, Health, healToApply);
+	OnHealthChanged.Broadcast(InstigatorActor, this, Health, healToApply);
 	return true;
 }
 

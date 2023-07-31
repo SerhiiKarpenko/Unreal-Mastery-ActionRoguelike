@@ -51,8 +51,8 @@ public:
 	FOnDie OnDie;
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
-	bool ApplyDamage(float damageToApply);
-	bool Heal(float healToApply);
+	bool ApplyDamage(AActor* instigatorActor, float damageToApply);
+	bool Heal(AActor* InstigatorActor, float healToApply);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsAlive() const;

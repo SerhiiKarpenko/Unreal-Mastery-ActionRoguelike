@@ -30,7 +30,7 @@ void ASHealthPotion::Pickup_Implementation(APawn* InstigatorPawn)
 	if (attributes == nullptr)
 		return;
 	
-	if(!attributes->Heal(20.0f))
+	if(!attributes->Heal(InstigatorPawn, 20.0f))
 		return;
 
 	CanBeUsed = false;
