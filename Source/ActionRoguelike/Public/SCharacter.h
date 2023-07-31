@@ -56,7 +56,7 @@ protected:
 	UPROPERTY(BlueprintAssignable)
 	FOnSpellCast OnSpellCast;
 	
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCameraComponent* CameraComponent;
 	
 	UPROPERTY(VisibleAnywhere) // UPROPERTY gives us visible component everywhere
