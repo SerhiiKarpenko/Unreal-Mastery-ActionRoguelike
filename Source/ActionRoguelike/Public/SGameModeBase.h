@@ -23,6 +23,8 @@ public:
 	virtual void StartPlay() override;
 	
 protected:
+
+	int32 MaxBotCount;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	float SpawnTimerInterval;

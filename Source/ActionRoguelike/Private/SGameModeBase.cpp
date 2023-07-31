@@ -9,6 +9,7 @@
 ASGameModeBase::ASGameModeBase()
 {
 	SpawnTimerInterval = 10;
+	MaxBotCount = 10;
 }
 
 void ASGameModeBase::StartPlay()
@@ -46,8 +47,6 @@ void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryIn
 		if (AttributeComponent != nullptr && AttributeComponent->IsAlive())
 			numberOfAliveBots++;
 		
-		const float MaxBotCount = 10.0f;
-
 		if (numberOfAliveBots >= MaxBotCount)
 			return;
 	}

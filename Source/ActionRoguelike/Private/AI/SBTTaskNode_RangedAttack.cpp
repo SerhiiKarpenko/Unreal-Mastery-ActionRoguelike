@@ -27,6 +27,7 @@ EBTNodeResult::Type USBTTaskNode_RangedAttack::ExecuteTask(UBehaviorTreeComponen
 
 	FActorSpawnParameters params;
 	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	params.Instigator = MyController->GetPawn();
 
 	AActor* newProjectile = GetWorld()->SpawnActor<AActor>(Projectile, muzzleLocation, muzzleRotation, params);
 
