@@ -33,7 +33,7 @@ void ASAICharacter::DamageTaken(AActor* InstigatorActor, USAttributeComponent* O
 	if (InstigatorActor == this)
 		return;
 
-	SetTarget(this);
+	SetTarget(InstigatorActor);
 }
 
 void ASAICharacter::OnDie()
