@@ -19,7 +19,13 @@ class ACTIONROGUELIKE_API USAttributeComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "Attribtues")
+	static USAttributeComponent* GetAttribute(AActor* fromActor);
+
+	static bool IsActorAlive(AActor* actor);
+	
 	USAttributeComponent();
 
 protected:

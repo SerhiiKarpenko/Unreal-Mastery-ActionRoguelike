@@ -54,3 +54,29 @@ void USAttributeComponent::Die()
 	isAlive = false;
 }
 
+USAttributeComponent* USAttributeComponent::GetAttribute(AActor* fromActor)
+{
+	if (fromActor == nullptr)
+		return nullptr;
+
+	return Cast<USAttributeComponent>(fromActor->GetComponentByClass(StaticClass()));
+	
+}
+
+bool USAttributeComponent::IsActorAlive(AActor* actor)
+{
+	USAttributeComponent* attributeComponent = GetAttribute(actor);
+
+	if (attributeComponent == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Cannot check if %s is alive because actor have no attributes component"),
+		       *actor->GetName());
+		
+		return false;
+	}
+
+	return attributeComponent->IsAlive();
+}
+
+
+

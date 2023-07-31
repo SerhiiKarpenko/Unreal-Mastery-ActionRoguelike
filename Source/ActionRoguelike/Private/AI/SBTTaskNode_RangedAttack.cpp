@@ -1,6 +1,13 @@
 #include "AI/SBTTaskNode_RangedAttack.h"
 #include "AIController.h"
+#include "SAttributeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+
+USBTTaskNode_RangedAttack::USBTTaskNode_RangedAttack()
+{
+	MaxBulletSpread = 2.0f;
+}
+
 #include "GameFramework/Character.h"
 
 EBTNodeResult::Type USBTTaskNode_RangedAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -22,9 +29,17 @@ EBTNodeResult::Type USBTTaskNode_RangedAttack::ExecuteTask(UBehaviorTreeComponen
 	if (target == nullptr)
 		return EBTNodeResult::Failed;
 
+	if( !USAttributeComponent::IsActorAlive(target) )
+	{
+		return EBTNodeResult::Failed;
+	}
+
 	FVector direction = target->GetActorLocation() - muzzleLocation;
 	FRotator muzzleRotation = direction.Rotation();
 
+	muzzleRotation.Pitch += FMath::RandRange(0.0f, MaxBulletSpread);
+	muzzleRotation.Yaw += FMath::RandRange(-MaxBulletSpread, MaxBulletSpread);
+	
 	FActorSpawnParameters params;
 	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	params.Instigator = MyController->GetPawn();

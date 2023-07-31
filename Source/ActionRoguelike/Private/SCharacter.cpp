@@ -12,6 +12,7 @@
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "SAttributeComponent.h"
+#include "SMagicProjectile.h"
 #include "GenericPlatform/GenericPlatformCrashContext.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -256,18 +257,6 @@ FRotator ASCharacter::CalculateDirectionForProjectile(FVector startProjectilePos
 		
 		return direction.Rotation();
 	}
-
-	/*for (FHitResult hitResult : hitResults)
-	{
-		UPrimitiveComponent* PrimitiveComponent = hitResult.GetComponent();
-
-		prim
-		
-		if ()
-		{
-			hitResults.Remove(hitResult);
-		}
-	}*/
 	
 	for(FHitResult hit : hitResults)
 	{

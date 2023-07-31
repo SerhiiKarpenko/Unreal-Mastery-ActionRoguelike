@@ -17,25 +17,22 @@ public:
 	ASAICharacter();
 
 protected:
-
-	void SetTarget(AActor* newTarget);
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UPawnSensingComponent* PawnSensingComponent;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Components")
 	class USAttributeComponent* AttributeComponent;
-
-	virtual void PostInitializeComponents() override;
-
+	
 	UFUNCTION()
 	void DamageTaken(AActor* InstigatorActor, USAttributeComponent* OwningComponent, float NewHealth, float HealthChange);
 	
 	UFUNCTION()
 	void OnDie();
 	
-
-	
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
+	
+	virtual void PostInitializeComponents() override;
+	void SetTarget(AActor* newTarget);
 };
