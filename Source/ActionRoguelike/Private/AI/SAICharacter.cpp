@@ -67,8 +67,3 @@ void ASAICharacter::OnPawnSeen(APawn* Pawn)
 	SetTarget(Pawn);
 	DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER_SPOTTED", nullptr, FColor::White, 4.0f, true);
 }
-
-
-
-
-

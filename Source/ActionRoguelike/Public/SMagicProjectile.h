@@ -48,6 +48,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class TSubclassOf<UCameraShakeBase> CameraShake;
 
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	class USoundBase* sound;
+
 public:	
 
 

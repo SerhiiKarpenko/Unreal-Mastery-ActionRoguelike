@@ -56,6 +56,7 @@ void ASMagicProjectile::OnOverlapWithActor(
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, GetActorLocation(), 50, 50);
 	
 	AudioComponent->DestroyComponent();
+	UGameplayStatics::PlaySoundAtLocation(this, sound, GetActorLocation());
 	
 	Destroy();
 }

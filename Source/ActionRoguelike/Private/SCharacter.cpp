@@ -247,7 +247,6 @@ FRotator ASCharacter::CalculateDirectionForProjectile(FVector startProjectilePos
 	FVector start = playerController->PlayerCameraManager->GetCameraLocation();
 	FVector end = start + (playerController->PlayerCameraManager->GetCameraRotation().Vector() * 10000);
 	
-	
 	GetWorld()->LineTraceMultiByObjectType(hitResults, start, end, objectParameters);
 
 	if (hitResults.IsEmpty())
