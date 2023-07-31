@@ -46,10 +46,14 @@ void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryIn
 		
 		if (AttributeComponent != nullptr && AttributeComponent->IsAlive())
 			numberOfAliveBots++;
-		
-		if (numberOfAliveBots >= MaxBotCount)
-			return;
 	}
+
+	if (DifficultyCurve != nullptr)
+		MaxBotCount = DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
+	
+	
+	if (numberOfAliveBots >= MaxBotCount)
+		return;
 	
 	TArray<FVector> locations = QueryInstance->GetResultsAsLocations();
 

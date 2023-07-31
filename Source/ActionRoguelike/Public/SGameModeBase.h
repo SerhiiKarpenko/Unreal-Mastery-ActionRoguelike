@@ -34,6 +34,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI");
 	TSubclassOf<AActor> MinionClass;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "AI");
+	class UCurveFloat* DifficultyCurve;
 
 	UFUNCTION()
 	void OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
