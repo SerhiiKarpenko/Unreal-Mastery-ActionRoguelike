@@ -12,6 +12,10 @@ class ACTIONROGUELIKE_API USWorldUserWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	FVector WorldPositionOffset;
+	
 	UPROPERTY(BlueprintReadOnly, Category = "UI")
 	AActor* AttachedActor;
 	
