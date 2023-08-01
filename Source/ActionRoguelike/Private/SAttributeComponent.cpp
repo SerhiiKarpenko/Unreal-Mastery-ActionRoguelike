@@ -2,7 +2,7 @@
 
 USAttributeComponent::USAttributeComponent()
 {
-	Health = 100;
+	Health = MaxHealth;
 }
 
 bool USAttributeComponent::ApplyDamage(AActor* instigatorActor, float damageToApply)

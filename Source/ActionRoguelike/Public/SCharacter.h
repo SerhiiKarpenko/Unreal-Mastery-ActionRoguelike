@@ -42,13 +42,6 @@ public:
 	ASCharacter();
 	
 
-protected:
-
-	virtual void BeginPlay() override; // works like a start method in unity
-
-public:	
-	virtual void Tick(float DeltaTime) override; // works like an update method in unity
-
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // here we bind all input
 
 protected:

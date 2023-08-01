@@ -17,7 +17,8 @@ public class ActionRoguelike : ModuleRules
 			"InputCore", 
 			"EnhancedInput",
 			"AIModule",
-			"GameplayTasks"
+			"GameplayTasks",
+			"UMG"
 		});
 		//PrivateDependencyModuleNames.AddRange(new string[] { "ActionRoguelike" });
 

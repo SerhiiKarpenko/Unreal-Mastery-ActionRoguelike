@@ -3,7 +3,6 @@
 
 #include "SCharacter.h"
 #include "SInputDataConfig.h"
-#include "ActionRoguelike/Public/SCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -12,8 +11,6 @@
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "SAttributeComponent.h"
-#include "SMagicProjectile.h"
-#include "GenericPlatform/GenericPlatformCrashContext.h"
 #include "Kismet/GameplayStatics.h"
 
 ASCharacter::ASCharacter() // constructor
@@ -36,19 +33,6 @@ ASCharacter::ASCharacter() // constructor
 	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>("Attributes Component");
 
 	HandSocketName = "Muzzle_01";
-}
-
-
-void ASCharacter::BeginPlay() // unit start method
-{
-	Super::BeginPlay();
-	
-}
-
-void ASCharacter::Tick(float DeltaTime)  // unity update method
-{
-	Super::Tick(DeltaTime);
-
 }
 
 void ASCharacter::PostInitializeComponents()

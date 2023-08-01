@@ -4,7 +4,9 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/PawnSensingComponent.h"
 #include "DrawDebugHelpers.h"
+#include "SWorldUserWidget.h"
 #include "AI/SAIController.h"
+#include "Blueprint/UserWidget.h"
 
 ASAICharacter::ASAICharacter()
 {
@@ -34,6 +36,13 @@ void ASAICharacter::DamageTaken(AActor* InstigatorActor, USAttributeComponent* O
 		return;
 
 	SetTarget(InstigatorActor);
+
+	if (ActiveWidget != nullptr)
+		return;
+	
+	ActiveWidget = CreateWidget<USWorldUserWidget>(GetWorld(), HealthBarWidgetClass);
+	ActiveWidget->AttachedActor = this;
+	ActiveWidget->AddToViewport();
 }
 
 void ASAICharacter::OnDie()

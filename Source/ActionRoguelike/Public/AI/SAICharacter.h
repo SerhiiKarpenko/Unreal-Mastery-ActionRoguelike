@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SAttributeComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "GameFramework/Character.h"
 #include "Perception/PawnSensingComponent.h"
 #include "SAICharacter.generated.h"
@@ -17,13 +18,18 @@ public:
 	ASAICharacter();
 
 protected:
+
+	class USWorldUserWidget* ActiveWidget;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UPawnSensingComponent* PawnSensingComponent;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Components")
 	class USAttributeComponent* AttributeComponent;
-	
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	class TSubclassOf<UUserWidget> HealthBarWidgetClass;
+
 	UFUNCTION()
 	void DamageTaken(AActor* InstigatorActor, USAttributeComponent* OwningComponent, float NewHealth, float HealthChange);
 	
