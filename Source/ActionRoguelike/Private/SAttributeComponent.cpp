@@ -78,5 +78,10 @@ bool USAttributeComponent::IsActorAlive(AActor* actor)
 	return attributeComponent->IsAlive();
 }
 
+bool USAttributeComponent::Kill(AActor* instigator)
+{
+	return ApplyDamage(instigator, -MaxHealth);
+}
+
 
 

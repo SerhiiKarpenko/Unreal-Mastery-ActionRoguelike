@@ -65,6 +65,9 @@ public:
 
 	void Die();
 
+	UFUNCTION(BlueprintCallable)
+	bool Kill(AActor* instigator);
+
 private:
 	bool isAlive = true;
 };

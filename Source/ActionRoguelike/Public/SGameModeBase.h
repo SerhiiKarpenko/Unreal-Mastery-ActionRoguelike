@@ -14,6 +14,9 @@ class ACTIONROGUELIKE_API ASGameModeBase : public AGameModeBase
 public:
 	ASGameModeBase();
 	virtual void StartPlay() override;
+
+	UFUNCTION(Exec)
+	void KillAllEnemies();
 	
 protected:
 
