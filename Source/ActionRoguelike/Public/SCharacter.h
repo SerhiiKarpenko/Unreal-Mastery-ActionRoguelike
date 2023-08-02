@@ -42,7 +42,10 @@ public:
 	ASCharacter();
 	
 
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; // here we bind all input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(Exec)
+	void HealSelf(float Amount = 100);// here we bind all input
 
 protected:
 

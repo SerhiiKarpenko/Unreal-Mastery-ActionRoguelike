@@ -261,3 +261,8 @@ void ASCharacter::DisablePlayerInput()
 	APlayerController* playerController = Cast<APlayerController>(GetController());
 	DisableInput(playerController);
 }
+
+void ASCharacter::HealSelf(float Amount)
+{
+	AttributeComponent->Heal(this, Amount);
+}
