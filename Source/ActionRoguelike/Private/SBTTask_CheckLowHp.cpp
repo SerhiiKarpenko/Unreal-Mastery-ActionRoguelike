@@ -19,7 +19,7 @@ void USBTTask_CheckLowHp::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	if (attributes == nullptr)
 		return;
 	
-	bool isLowHP = attributes->GetHPPercent() <= 0.5f;
+	bool isLowHP = attributes->GetHPPercent() <= 0.3f;
 
 	blackboardComponent->SetValueAsBool(AttackRangeKey.SelectedKeyName, isLowHP);
 	
