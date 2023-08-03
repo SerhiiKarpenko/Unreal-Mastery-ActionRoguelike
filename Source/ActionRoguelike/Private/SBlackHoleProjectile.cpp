@@ -29,6 +29,9 @@ ASBlackHoleProjectile::ASBlackHoleProjectile()
 	ProjectileSphereComponent->SetCollisionProfileName("BlackHole");
 	ProjectileMovementComponent->InitialSpeed = 500.0f;
 
+	ConstantBlackHoleDamage = 0.1f;
+	ExplosionBlackHoleDamage = 20;
+
 }
 
 void ASBlackHoleProjectile::BeginPlay()
@@ -63,8 +66,8 @@ void ASBlackHoleProjectile::Tick(float DeltaSeconds)
 				
 			continue;
 		}
-		
-		ArrayOfAttributes[i]->ApplyDamage(GetInstigator(), -0.5f);
+
+		ArrayOfAttributes[i]->ApplyDamage(GetInstigator(), -ConstantBlackHoleDamage);
 	}
 }
 
@@ -131,7 +134,7 @@ void ASBlackHoleProjectile::OnBlackHoleDestroy(AActor* destoryedACtor)
 			continue;
 		}
 		
-		ArrayOfAttributes[i]->ApplyDamage(GetInstigator(), 35);
+		ArrayOfAttributes[i]->ApplyDamage(GetInstigator(), -ExplosionBlackHoleDamage);
 	}
 }
 
