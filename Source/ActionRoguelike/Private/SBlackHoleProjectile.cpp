@@ -51,12 +51,34 @@ void ASBlackHoleProjectile::Tick(float DeltaSeconds)
 
 	if (ArrayOfAttributes.Num() <= 0)
 		return;
+
+	for(int i = ArrayOfAttributes.Num() - 1; i >= 0; i--)
+	{
+		if(!ArrayOfAttributes[i]->IsAlive())
+		{
+			ArrayOfAttributes.RemoveAt(i);
+
+			if (ArrayOfAttributes.Num() <= 0)
+				break;
+				
+			continue;
+		}
+		
+		ArrayOfAttributes[i]->ApplyDamage(GetInstigator(), -0.5f);
+	}
 	
 	for (USAttributeComponent* AttributeComponent : ArrayOfAttributes)
 	{
 		if(!AttributeComponent->IsAlive())
+		{
 			ArrayOfAttributes.RemoveSingle(AttributeComponent);
-			
+
+			if (ArrayOfAttributes.Num() <= 0)
+				break;
+				
+			continue;
+		}
+
 		AttributeComponent->ApplyDamage(GetInstigator(), -0.5f);
 	}
 }
