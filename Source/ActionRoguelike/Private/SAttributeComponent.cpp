@@ -83,5 +83,20 @@ bool USAttributeComponent::Kill(AActor* instigator)
 	return ApplyDamage(instigator, -MaxHealth);
 }
 
+float USAttributeComponent::GetMaxHP()
+{
+	return MaxHealth;
+}
+
+float USAttributeComponent::GetHP()
+{
+	return Health;
+}
+
+float USAttributeComponent::GetHPPercent()
+{
+	return Health/MaxHealth;
+}
+
 
 

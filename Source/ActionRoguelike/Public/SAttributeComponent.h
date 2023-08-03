@@ -27,7 +27,10 @@ public:
 	static bool IsActorAlive(AActor* actor);
 	
 	USAttributeComponent();
-
+	
+	float GetMaxHP();
+	float GetHP();
+	float GetHPPercent();
 protected:
 
 	// EditAnywhere - edit in BP editor pre-instance in level
