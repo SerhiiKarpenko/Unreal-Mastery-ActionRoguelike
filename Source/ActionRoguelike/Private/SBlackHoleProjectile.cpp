@@ -2,6 +2,8 @@
 
 
 #include "SBlackHoleProjectile.h"
+
+#include "SAttributeComponent.h"
 #include "Components/SphereComponent.h"
 #include "SBaseProjectile.h"
 #include "Kismet/GameplayStatics.h"
@@ -12,6 +14,12 @@ ASBlackHoleProjectile::ASBlackHoleProjectile()
 {
 	RadialForceComponent = CreateDefaultSubobject<URadialForceComponent>("Radial Force Component");
 	RadialForceComponent->SetupAttachment(ProjectileSphereComponent);
+
+
+	SphereComponentToCollectOverlappedObjects = CreateDefaultSubobject<USphereComponent>("Sphere Component For Collisions");
+	SphereComponentToCollectOverlappedObjects->SetupAttachment(ProjectileSphereComponent);
+	SphereComponentToCollectOverlappedObjects->SetSphereRadius(1300);
+	SphereComponentToCollectOverlappedObjects->SetCollisionProfileName("BlackHole");
 	
 	RadialForceComponent->Radius = 1300;
 	RadialForceComponent->ForceStrength = -900000.0f;
@@ -23,6 +31,35 @@ ASBlackHoleProjectile::ASBlackHoleProjectile()
 
 }
 
+void ASBlackHoleProjectile::BeginPlay()
+{
+	Super::BeginPlay();
+	ProjectileSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ASBlackHoleProjectile::DestroyObjects);
+	OnDestroyed.AddDynamic(this, &ASBlackHoleProjectile::OnBlackHoleDestroy);
+}
+
+void ASBlackHoleProjectile::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	SphereComponentToCollectOverlappedObjects->OnComponentBeginOverlap.AddDynamic(this, &ASBlackHoleProjectile::CollectOverlappedObjects);
+	SphereComponentToCollectOverlappedObjects->OnComponentEndOverlap.AddDynamic(this, &ASBlackHoleProjectile::RemoveOverlappedObject);
+}
+
+void ASBlackHoleProjectile::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (ArrayOfAttributes.Num() <= 0)
+		return;
+	
+	for (USAttributeComponent* AttributeComponent : ArrayOfAttributes)
+	{
+		if(!AttributeComponent->IsAlive())
+			ArrayOfAttributes.RemoveSingle(AttributeComponent);
+			
+		AttributeComponent->ApplyDamage(GetInstigator(), -0.5f);
+	}
+}
 
 void ASBlackHoleProjectile::DestroyObjects(
 	UPrimitiveComponent* OverlappedComponent,
@@ -38,16 +75,36 @@ void ASBlackHoleProjectile::DestroyObjects(
 	OtherActor->Destroy();
 }
 
-void ASBlackHoleProjectile::BeginPlay()
+void ASBlackHoleProjectile::CollectOverlappedObjects(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::BeginPlay();
-	ProjectileSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ASBlackHoleProjectile::DestroyObjects);
-	OnDestroyed.AddDynamic(this, &ASBlackHoleProjectile::OnBlackHoleDestroy);
+
+	if (OtherActor == GetInstigator())
+		return;
+	
+	USAttributeComponent* AttributeComponent = USAttributeComponent::GetAttribute(OtherActor);
+
+	if( AttributeComponent == nullptr)
+		return;
+
+	ArrayOfAttributes.Add(AttributeComponent);
 }
 
-void ASBlackHoleProjectile::Tick(float DeltaSeconds)
+void ASBlackHoleProjectile::RemoveOverlappedObject(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	Super::Tick(DeltaSeconds);
+	if (OtherActor == GetInstigator())
+		return;
+	
+	USAttributeComponent* AttributeComponent = USAttributeComponent::GetAttribute(OtherActor);
+
+	if( AttributeComponent == nullptr)
+		return;
+
+	if(!ArrayOfAttributes.Contains(AttributeComponent))
+		return;
+		
+	ArrayOfAttributes.RemoveSingle(AttributeComponent);
 }
 
 void ASBlackHoleProjectile::OnBlackHoleDestroy(AActor* destoryedACtor)

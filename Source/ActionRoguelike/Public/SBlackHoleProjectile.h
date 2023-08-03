@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SAttributeComponent.h"
 #include "SBaseProjectile.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -31,13 +32,36 @@ protected:
 	class URadialForceComponent* RadialForceComponent;
 
 	class UStaticMeshComponent* StaticMeshComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	class USphereComponent* SphereComponentToCollectOverlappedObjects;
+	
 	FTimerHandle TimerToDestroy;
 	FTimerHandle DestroyHandle;
 
 
+	TArray<USAttributeComponent*> ArrayOfAttributes;
+
 	UFUNCTION()
 	void DestroyObjects(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
+	UFUNCTION()
+	void CollectOverlappedObjects(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+	
+	UFUNCTION()
+	void RemoveOverlappedObject(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex);
+	
+	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void PostInitializeComponents() override;
 };
