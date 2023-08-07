@@ -10,6 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "InputActionValue.h"
+#include "SActionComponent.h"
 #include "SAttributeComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -31,6 +32,7 @@ ASCharacter::ASCharacter() // constructor
 
 	ProjectileFactory = CreateDefaultSubobject<USProjectileFactory>("Projectile Factory");
 	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>("Attributes Component");
+	ActionComponent = CreateDefaultSubobject<USActionComponent>("Action Component");
 
 	HandSocketName = "Muzzle_01";
 }
@@ -67,6 +69,8 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	EnhancedInputComponent->BindAction(InputDataConfig->BlackHoleAttack, ETriggerEvent::Started, this, &ASCharacter::BlackHoleAttack);
 	EnhancedInputComponent->BindAction(InputDataConfig->Teleport, ETriggerEvent::Started, this, &ASCharacter::Teleport);
 	EnhancedInputComponent->BindAction(InputDataConfig->Interact, ETriggerEvent::Started, this, &ASCharacter::PrimaryInteract);
+	EnhancedInputComponent->BindAction(InputDataConfig->Sprint, ETriggerEvent::Started, this, &ASCharacter::SprintStart);
+	EnhancedInputComponent->BindAction(InputDataConfig->Sprint, ETriggerEvent::Canceled, this, &ASCharacter::SprintStop);
 }
 
 void ASCharacter::MoveForward(float value)
@@ -190,6 +194,7 @@ void ASCharacter::PrimaryInteract()
 	InteractionComponent->SecondInteract();
 }
 
+
 void ASCharacter::BlackHoleAttack()
 {
 	const FVector handLocation = GetMesh()->GetSocketLocation(HandSocketName);
@@ -270,4 +275,14 @@ void ASCharacter::DisablePlayerInput()
 void ASCharacter::HealSelf(float Amount)
 {
 	AttributeComponent->Heal(this, Amount);
+}
+
+void ASCharacter::SprintStart()
+{
+	ActionComponent->StartActionByName(this, "Sprint");
+}
+
+void ASCharacter::SprintStop()
+{
+	ActionComponent->StopActionByName(this, "Sprint");
 }

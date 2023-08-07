@@ -75,6 +75,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Collision Chanels")
 	TEnumAsByte<ECollisionChannel> ProjectileCollisionChanel;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class USActionComponent* ActionComponent;
 	
 	void MoveForward(float value);
 	void MoveRight(float value);
@@ -88,6 +91,8 @@ protected:
 	void TeleportElapsed();
 	void Teleport();
 	void PrimaryInteract();
+	void SprintStart();
+	void SprintStop();
 	FRotator CalculateDirectionForProjectile(FVector startProjectilePosition);
 	
 	UFUNCTION()

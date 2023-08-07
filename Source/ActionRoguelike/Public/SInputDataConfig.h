@@ -42,4 +42,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	const UInputAction* Interact;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	const UInputAction* Sprint;
 };
