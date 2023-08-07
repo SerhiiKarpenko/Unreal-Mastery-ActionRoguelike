@@ -74,7 +74,6 @@ USAttributeComponent* USAttributeComponent::GetAttribute(AActor* fromActor)
 		return nullptr;
 
 	return Cast<USAttributeComponent>(fromActor->GetComponentByClass(StaticClass()));
-	
 }
 
 bool USAttributeComponent::IsActorAlive(AActor* actor)
@@ -110,6 +109,12 @@ float USAttributeComponent::GetHP()
 float USAttributeComponent::GetHPPercent()
 {
 	return Health/MaxHealth;
+}
+
+void USAttributeComponent::ResetHP()
+{
+	Health = MaxHealth;
+	OnHealthChanged.Broadcast(GetOwner(), this, Health, 0);
 }
 
 

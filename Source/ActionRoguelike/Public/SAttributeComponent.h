@@ -31,6 +31,7 @@ public:
 	float GetMaxHP();
 	float GetHP();
 	float GetHPPercent();
+	void ResetHP(); 
 protected:
 
 	// EditAnywhere - edit in BP editor pre-instance in level
