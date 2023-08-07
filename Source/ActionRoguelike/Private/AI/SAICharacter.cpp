@@ -1,5 +1,6 @@
 #include "AI/SAICharacter.h"
 #include "AIController.h"
+#include "AudioDevice.h"
 #include "BrainComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/PawnSensingComponent.h"
@@ -7,6 +8,8 @@
 #include "SWorldUserWidget.h"
 #include "AI/SAIController.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ASAICharacter::ASAICharacter()
 {
@@ -14,6 +17,9 @@ ASAICharacter::ASAICharacter()
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>("Pawn Sensing Component");
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>("Attribute Component");
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Ignore);
+	GetMesh()->SetGenerateOverlapEvents(true);
 }
 
 void ASAICharacter::PostInitializeComponents()
@@ -56,6 +62,8 @@ void ASAICharacter::OnDie()
 	// ragdoll
 	GetMesh()->SetAllBodiesSimulatePhysics(true);
 	GetMesh()->SetCollisionProfileName("Ragdoll"); // prevents falling through the floor when killed
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->DisableMovement();
 	
 	// set lifespan // how l
 	SetLifeSpan(10.0f);

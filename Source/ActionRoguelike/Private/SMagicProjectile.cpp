@@ -1,6 +1,5 @@
 #include "SMagicProjectile.h"
-#include "SAttributeComponent.h"
-#include "Camera/CameraComponent.h"
+#include "SGameplayFunctionLibrary.h"
 #include "Components/AudioComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -45,12 +44,17 @@ void ASMagicProjectile::OnOverlapWithActor(
 	if (OtherActor == nullptr || OtherActor == GetInstigator())
 		return;
 
-	USAttributeComponent* actorsAttributes = Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
+	/*USAttributeComponent* actorsAttributes = Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
 
 	if (actorsAttributes == nullptr)
 		return;
 
 	actorsAttributes->ApplyDamage(GetInstigator(), -20.0);
+	*/
+
+	if(!USGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, 20.0f, SweepResult) )
+		return;
+	
 	
 	AudioComponent->Stop();
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, GetActorLocation(), 50, 50);

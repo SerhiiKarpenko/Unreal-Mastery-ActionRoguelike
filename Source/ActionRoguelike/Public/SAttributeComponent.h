@@ -66,7 +66,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsAlive() const;
 
-	void Die();
+	void Die(AActor* Instigator);
 
 	UFUNCTION(BlueprintCallable)
 	bool Kill(AActor* instigator);

@@ -94,4 +94,5 @@ protected:
 	void DisablePlayerInput();
 
 	virtual void PostInitializeComponents() override;
+	virtual FVector GetPawnViewLocation() const override;
 };

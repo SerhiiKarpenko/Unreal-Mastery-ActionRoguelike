@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EnvironmentQuery/EnvQuery.h"
 #include "EnvironmentQuery/EnvQueryInstanceBlueprintWrapper.h"
 #include "GameFramework/GameStateBase.h"
 #include "SGameModeBase.generated.h"
@@ -13,10 +12,13 @@ class ACTIONROGUELIKE_API ASGameModeBase : public AGameModeBase
 	
 public:
 	ASGameModeBase();
+	
 	virtual void StartPlay() override;
 
 	UFUNCTION(Exec)
 	void KillAllEnemies();
+
+	virtual void OnActorKilled(AActor* victimActor, AActor* killer);
 	
 protected:
 
@@ -41,4 +43,7 @@ protected:
 
 	UFUNCTION()
 	void SpawnBotTimerElapsed();
+
+	UFUNCTION()
+	void RespawnPlayerElapsed(AController* controller);
 };

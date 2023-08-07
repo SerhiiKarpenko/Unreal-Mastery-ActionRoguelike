@@ -1,9 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "SInteractionComponent.h"
 
 #include "SGameplayInterface.h"
+
+static TAutoConsoleVariable<bool> CVarDrawDebugs(TEXT("ar.DrawDebugs"), false,
+	TEXT("Global value for drawing debugs"), ECVF_Cheat);
 
 USInteractionComponent::USInteractionComponent()
 {
@@ -37,15 +37,16 @@ void USInteractionComponent::PrimaryInteract()
 
 	player->GetActorEyesViewPoint(eyeLocation, eyeRotation);
 
-	_interactionDistance = 300;
+	_interactionDistance = 500;
 	FVector end = eyeLocation + (eyeRotation.Vector() * _interactionDistance);
 	
 	FHitResult hit;
 	GetWorld()->LineTraceSingleByObjectType(hit, eyeLocation, end, objectParameters); //RAY TRACING;
 
 	AActor* hitActor = hit.GetActor();
-	
-	DrawDebugLine(GetWorld(), eyeLocation, end, FColor::Red, false, 2.0f, 0, 2.0f);
+
+	if(CVarDrawDebugs.GetValueOnGameThread())
+		DrawDebugLine(GetWorld(), eyeLocation, end, FColor::Red, false, 2.0f, 0, 2.0f);
 	
 	if(hitActor == nullptr)
 		return;
@@ -86,12 +87,15 @@ void USInteractionComponent::SecondInteract()
 		objectParameters,
 		collisionShape);
 
-	DrawDebugLine(GetWorld(), eyeLocation, end, FColor::Red, false, 2.0f, 0, 2.0f);
+	if(CVarDrawDebugs.GetValueOnGameThread())
+		DrawDebugLine(GetWorld(), eyeLocation, end, FColor::Red, false, 2.0f, 0, 2.0f);
 	
 	for (FHitResult hit : hits)
 	{
 		AActor* hitActor = hit.GetActor();
-		DrawDebugSphere(GetWorld(), hit.ImpactPoint, radius, 32, FColor::Red, false, 2.0f);
+		
+		if(CVarDrawDebugs.GetValueOnGameThread())
+			DrawDebugSphere(GetWorld(), hit.ImpactPoint, radius, 32, FColor::Red, false, 2.0f);
 	
 		if(hitActor == nullptr)
 			continue;

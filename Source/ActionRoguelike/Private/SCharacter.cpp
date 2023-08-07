@@ -41,6 +41,11 @@ void ASCharacter::PostInitializeComponents()
 	AttributeComponent->OnDie.AddDynamic(this, &ASCharacter::DisablePlayerInput);
 }
 
+FVector ASCharacter::GetPawnViewLocation() const
+{
+	return CameraComponent->GetComponentLocation();
+}
+
 void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) // here we bind an input
 {
 	APlayerController* PC = Cast<APlayerController>(GetController());

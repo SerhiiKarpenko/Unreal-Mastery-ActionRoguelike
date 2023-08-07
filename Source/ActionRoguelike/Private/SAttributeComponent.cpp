@@ -1,4 +1,9 @@
 #include "SAttributeComponent.h"
+#include "SGameModeBase.h"
+
+static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("ar.DamageMultiplier"), 1.0f,
+	TEXT("Global damage multiplier for Attribute Component"),ECVF_Cheat);
+
 
 USAttributeComponent::USAttributeComponent()
 {
@@ -9,11 +14,14 @@ bool USAttributeComponent::ApplyDamage(AActor* instigatorActor, float damageToAp
 {
 	if (Health <= 0)
 		return false;
+
+	float damageMultiplier = CVarDamageMultiplier.GetValueOnGameThread();
+	damageToApply *= damageMultiplier;
 	
 	if (abs(damageToApply) >= Health)
 	{
 		if (IsAlive())
-			Die();
+			Die(instigatorActor);
 		
 		Health = 0;
 		OnHealthChanged.Broadcast(instigatorActor, this, Health, damageToApply);
@@ -48,10 +56,16 @@ bool USAttributeComponent::IsAlive() const
 	return Health > 0.0f;
 }
 
-void USAttributeComponent::Die()
+void USAttributeComponent::Die(AActor* Instigator)
 {
 	OnDie.Broadcast();
 	isAlive = false;
+	ASGameModeBase* gameModeBase = GetWorld()->GetAuthGameMode<ASGameModeBase>();
+	
+	if (gameModeBase == nullptr)
+		return;
+
+	gameModeBase->OnActorKilled(GetOwner(), Instigator);
 }
 
 USAttributeComponent* USAttributeComponent::GetAttribute(AActor* fromActor)
