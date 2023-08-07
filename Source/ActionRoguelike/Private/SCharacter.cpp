@@ -70,7 +70,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	EnhancedInputComponent->BindAction(InputDataConfig->Teleport, ETriggerEvent::Started, this, &ASCharacter::Teleport);
 	EnhancedInputComponent->BindAction(InputDataConfig->Interact, ETriggerEvent::Started, this, &ASCharacter::PrimaryInteract);
 	EnhancedInputComponent->BindAction(InputDataConfig->Sprint, ETriggerEvent::Started, this, &ASCharacter::SprintStart);
-	EnhancedInputComponent->BindAction(InputDataConfig->Sprint, ETriggerEvent::Canceled, this, &ASCharacter::SprintStop);
+	EnhancedInputComponent->BindAction(InputDataConfig->Sprint, ETriggerEvent::Completed, this, &ASCharacter::SprintStop);
 }
 
 void ASCharacter::MoveForward(float value)

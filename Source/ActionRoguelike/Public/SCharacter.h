@@ -67,6 +67,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = " Enhanced Input ")
 	class UInputMappingContext* InputMappingContext;
 
+	
 	UPROPERTY(VisibleAnywhere, Category = "Projectile Factory")
 	class USProjectileFactory* ProjectileFactory;
 
