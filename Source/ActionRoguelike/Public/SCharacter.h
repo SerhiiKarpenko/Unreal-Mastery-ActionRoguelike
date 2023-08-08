@@ -86,15 +86,12 @@ protected:
 	void Look(const FInputActionValue& value);
 	void LookUpDown(const FInputActionValue& value);
 	void LookLeftRight(const FInputActionValue& value);
-	void PrimaryAttackTimeElapsed();
 	void PrimaryAttack();
 	void BlackHoleAttack();
-	void TeleportElapsed();
 	void Teleport();
 	void PrimaryInteract();
 	void SprintStart();
 	void SprintStop();
-	FRotator CalculateDirectionForProjectile(FVector startProjectilePosition);
 	
 	UFUNCTION()
 	void DisablePlayerInput();

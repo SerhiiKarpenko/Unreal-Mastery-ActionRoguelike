@@ -161,31 +161,9 @@ void ASCharacter::LookLeftRight(const FInputActionValue& value)
 
 void ASCharacter::PrimaryAttack()
 {
-	/*PlayAnimMontage(AtackAniamtion);
-
-	UGameplayStatics::SpawnEmitterAttached(CastingEffect, GetMesh(), HandSocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
-	
-	GetWorldTimerManager().SetTimer(TimerHandlePrimaryAttack, this, &ASCharacter::PrimaryAttackTimeElapsed, 0.2f);
-
-	//this one is stopping attack timer, for exmp if player died we just clearing the timer
-	//GetWorldTimerManager().ClearTimer(TimerHandlePrimaryAttack); 
-	*/
-
 	ActionComponent->StartActionByName(this, "PrimaryAttack");
 }
 
-void ASCharacter::PrimaryAttackTimeElapsed()
-{
-	const FVector handLocation = GetMesh()->GetSocketLocation(HandSocketName);
-	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
-	
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParameters.Instigator = this;
-
-	OnSpellCast.Broadcast();
-	ProjectileFactory->CreateMagic(SpawnTransformMatrix, SpawnParameters);
-}
 
 void ASCharacter::PrimaryInteract()
 {
@@ -199,77 +177,12 @@ void ASCharacter::PrimaryInteract()
 
 void ASCharacter::BlackHoleAttack()
 {
-	
-	/*const FVector handLocation = GetMesh()->GetSocketLocation(HandSocketName);
-	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
-	
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParameters.Instigator = this;
-	
-	ProjectileFactory->CreateBlackHole(SpawnTransformMatrix, SpawnParameters);*/
-
 	ActionComponent->StartActionByName(this, "Blackhole");
 }
 
 void ASCharacter::Teleport()
 {
-
 	ActionComponent->StartActionByName(this, "Teleport");
-	/*PlayAnimMontage(AtackAniamtion);
-
-	GetWorldTimerManager().SetTimer(TimerHandlePrimaryAttack, this, &ASCharacter::TeleportElapsed, 0.2f);*/
-}
-
-void ASCharacter::TeleportElapsed()
-{
-	const FVector handLocation = GetMesh()->GetSocketLocation(HandSocketName);
-	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
-	
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParameters.Instigator = this;
-
-	OnSpellCast.Broadcast();
-	ProjectileFactory->CreateTeleport(SpawnTransformMatrix, SpawnParameters);
-}
-
-FRotator ASCharacter::CalculateDirectionForProjectile(FVector startProjectilePosition)
-{
-	APlayerController* playerController = Cast<APlayerController>(Controller);
-	
-	FCollisionObjectQueryParams objectParameters;
-	objectParameters.AddObjectTypesToQuery(ECC_WorldStatic);
-	objectParameters.AddObjectTypesToQuery(ECC_WorldDynamic);
-	objectParameters.AddObjectTypesToQuery(ECC_PhysicsBody);
-
-	TArray<FHitResult> hitResults;
-	
-	FVector start = playerController->PlayerCameraManager->GetCameraLocation();
-	FVector end = start + (playerController->PlayerCameraManager->GetCameraRotation().Vector() * 10000);
-	
-	GetWorld()->LineTraceMultiByObjectType(hitResults, start, end, objectParameters);
-
-	if (hitResults.IsEmpty())
-	{
-		FVector direction = end - startProjectilePosition;
-		direction.Normalize();
-		
-		return direction.Rotation();
-	}
-	
-	for(FHitResult hit : hitResults)
-	{
-		FVector direction = hit.ImpactPoint - startProjectilePosition;
-		direction.Normalize();
-		
-		return direction.Rotation();
-	}
-
-	FVector direction = end - startProjectilePosition;
-	direction.Normalize();
-		
-	return  direction.Rotation();
 }
 
 
