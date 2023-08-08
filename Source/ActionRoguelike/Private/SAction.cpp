@@ -4,6 +4,7 @@
 
 void USAction::StartAction_Implementation(AActor* instigator)
 {
+
 	UE_LOG(LogTemp,Log,TEXT("Running %s"), *GetNameSafe(this));
 
 	USActionComponent* owningComponent = GetOwningComponent();
@@ -48,6 +49,9 @@ USActionComponent* USAction::GetOwningComponent() const
 
 bool USAction::CanStart_Implementation(AActor* instigator)
 {
+	if (IsRunning())
+		return false;
+	
 	USActionComponent* owningComponent = GetOwningComponent();
 	return !owningComponent->ActiveGameplayTags.HasAny(BlockedTags);
 }
