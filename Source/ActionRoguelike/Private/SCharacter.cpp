@@ -34,7 +34,6 @@ ASCharacter::ASCharacter() // constructor
 	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>("Attributes Component");
 	ActionComponent = CreateDefaultSubobject<USActionComponent>("Action Component");
 
-	HandSocketName = "Muzzle_01";
 }
 
 void ASCharacter::PostInitializeComponents()

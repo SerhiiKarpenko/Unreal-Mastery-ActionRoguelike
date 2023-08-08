@@ -20,25 +20,7 @@ class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-protected:
-
-	UPROPERTY(EditAnywhere, Category = "Attack") // give as a possibility to change it anywhere we want,
-	TSubclassOf<AActor> ProjectileClass; // give as a field where we can pass the reference to another class,
-
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	UAnimMontage* AtackAniamtion;
-	FTimerHandle TimerHandlePrimaryAttack;
-	
-	UPROPERTY(VisibleAnywhere, Category= "Attack")
-	
-	FName HandSocketName;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Attack")
-	class UParticleSystem* CastingEffect;
-
 public:
-	// Sets default values for this character's properties
-	// works firstly, BeginPlayer works after all components and etc is initialized, but constructor works first
 	ASCharacter();
 	
 
