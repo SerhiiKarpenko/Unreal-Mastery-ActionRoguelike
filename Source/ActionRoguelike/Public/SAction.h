@@ -4,6 +4,8 @@
 #include "UObject/NoExportTypes.h"
 #include "SAction.generated.h"
 
+class UWorld;
+
 UCLASS(Blueprintable) // now we can create child classes from USAction 
 class ACTIONROGUELIKE_API USAction : public UObject
 {
@@ -19,5 +21,6 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Action")
 	FName ActionName;
-	
+
+	UWorld* GetWorld() const override;
 };

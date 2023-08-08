@@ -39,7 +39,9 @@ void USActionProjectileAttack::AttackDelayElapsed(ACharacter* instigatorCharacte
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParameters.Instigator = instigatorCharacter;
 
-	ProjectileFactory->CreateMagic(SpawnTransformMatrix, SpawnParameters);
+	//ProjectileFactory->CreateMagic(SpawnTransformMatrix, SpawnParameters);
+	GetWorld()->SpawnActor<AActor>(Projectile, SpawnTransformMatrix, SpawnParameters);
+	StopAction(instigatorCharacter);
 }
 
 FRotator USActionProjectileAttack::CalculateDirectionForProjectile(FVector startProjectilePosition, APlayerController* controller)

@@ -17,6 +17,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	class USProjectileFactory* ProjectileFactory;
 
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	class TSubclassOf<AActor> Projectile;
+
 	UPROPERTY(VisibleAnywhere, Category = "Attack")
 	FName HandSocketName;
 
@@ -32,7 +35,7 @@ protected:
 	UFUNCTION()
 	void AttackDelayElapsed(ACharacter* instigatorCharacter);
 
-	FRotator USActionProjectileAttack::CalculateDirectionForProjectile(FVector startProjectilePosition, APlayerController* controller);
+	FRotator CalculateDirectionForProjectile(FVector startProjectilePosition, APlayerController* controller);
 public:
 
 	virtual void StartAction_Implementation(AActor* instigator) override;

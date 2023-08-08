@@ -161,7 +161,7 @@ void ASCharacter::LookLeftRight(const FInputActionValue& value)
 
 void ASCharacter::PrimaryAttack()
 {
-	PlayAnimMontage(AtackAniamtion);
+	/*PlayAnimMontage(AtackAniamtion);
 
 	UGameplayStatics::SpawnEmitterAttached(CastingEffect, GetMesh(), HandSocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
 	
@@ -169,7 +169,9 @@ void ASCharacter::PrimaryAttack()
 
 	//this one is stopping attack timer, for exmp if player died we just clearing the timer
 	//GetWorldTimerManager().ClearTimer(TimerHandlePrimaryAttack); 
-	
+	*/
+
+	ActionComponent->StartActionByName(this, "PrimaryAttack");
 }
 
 void ASCharacter::PrimaryAttackTimeElapsed()
