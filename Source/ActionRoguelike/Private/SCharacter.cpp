@@ -199,21 +199,26 @@ void ASCharacter::PrimaryInteract()
 
 void ASCharacter::BlackHoleAttack()
 {
-	const FVector handLocation = GetMesh()->GetSocketLocation(HandSocketName);
+	
+	/*const FVector handLocation = GetMesh()->GetSocketLocation(HandSocketName);
 	const FTransform SpawnTransformMatrix = FTransform(CalculateDirectionForProjectile(handLocation), handLocation);
 	
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParameters.Instigator = this;
 	
-	ProjectileFactory->CreateBlackHole(SpawnTransformMatrix, SpawnParameters);
+	ProjectileFactory->CreateBlackHole(SpawnTransformMatrix, SpawnParameters);*/
+
+	ActionComponent->StartActionByName(this, "Blackhole");
 }
 
 void ASCharacter::Teleport()
 {
-	PlayAnimMontage(AtackAniamtion);
 
-	GetWorldTimerManager().SetTimer(TimerHandlePrimaryAttack, this, &ASCharacter::TeleportElapsed, 0.2f);
+	ActionComponent->StartActionByName(this, "Teleport");
+	/*PlayAnimMontage(AtackAniamtion);
+
+	GetWorldTimerManager().SetTimer(TimerHandlePrimaryAttack, this, &ASCharacter::TeleportElapsed, 0.2f);*/
 }
 
 void ASCharacter::TeleportElapsed()
