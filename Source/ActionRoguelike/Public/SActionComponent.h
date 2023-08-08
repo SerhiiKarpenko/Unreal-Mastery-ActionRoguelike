@@ -1,7 +1,7 @@
-
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "SAction.h"
 #include "Components/ActorComponent.h"
 #include "SActionComponent.generated.h"
@@ -15,6 +15,10 @@ class ACTIONROGUELIKE_API USActionComponent : public UActorComponent
 public:	
 	USActionComponent();
 
+	// player states like, SPRINTING, ATTACKING, STUNNED, other components now can read from this container, and check the player state
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tags")
+	FGameplayTagContainer ActiveGameplayTags;
+	
 protected:
 	virtual void BeginPlay() override;
 
