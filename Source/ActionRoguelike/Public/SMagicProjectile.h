@@ -54,6 +54,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	class USoundBase* sound;
 
+	UPROPERTY(EditAnywhere, Category = "Damage")
+	float DamageAmount;
+
 public:	
 
 

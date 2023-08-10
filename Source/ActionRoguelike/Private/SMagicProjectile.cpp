@@ -32,6 +32,7 @@ ASMagicProjectile::ASMagicProjectile()
 
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>("Audio component");
 	AudioComponent->SetupAttachment(SphereComponent);
+	DamageAmount = 20.0f;
 }
 
 
@@ -60,10 +61,11 @@ void ASMagicProjectile::OnOverlapWithActor(
 	{
 		ProjectileMovementComponent->Velocity = -ProjectileMovementComponent->Velocity;
 		SetInstigator(Cast<APawn>(OtherActor));
+		DamageAmount = 4.0f;
 		return;
 	}
-	
-	if(!USGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, 20.0f, SweepResult) )
+
+	if(!USGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult) )
 		return;
 	
 	AudioComponent->Stop();
