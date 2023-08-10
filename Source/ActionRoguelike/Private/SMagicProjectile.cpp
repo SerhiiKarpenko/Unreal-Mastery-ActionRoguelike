@@ -1,4 +1,6 @@
 #include "SMagicProjectile.h"
+
+#include "SActionComponent.h"
 #include "SGameplayFunctionLibrary.h"
 #include "Components/AudioComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -52,9 +54,17 @@ void ASMagicProjectile::OnOverlapWithActor(
 	actorsAttributes->ApplyDamage(GetInstigator(), -20.0);
 	*/
 
+	USActionComponent* actionComponent = Cast<USActionComponent>(OtherActor->GetComponentByClass(USActionComponent::StaticClass()));
+	
+	if (actionComponent != nullptr && actionComponent->ActiveGameplayTags.HasTag(ParryTag))
+	{
+		ProjectileMovementComponent->Velocity = -ProjectileMovementComponent->Velocity;
+		SetInstigator(Cast<APawn>(OtherActor));
+		return;
+	}
+	
 	if(!USGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, 20.0f, SweepResult) )
 		return;
-	
 	
 	AudioComponent->Stop();
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, GetActorLocation(), 50, 50);

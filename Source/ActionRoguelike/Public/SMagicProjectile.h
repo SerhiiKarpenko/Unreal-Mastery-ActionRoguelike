@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "SMagicProjectile.generated.h"
@@ -32,7 +33,9 @@ protected:
 		);
 	
 
-
+	UPROPERTY(EditDefaultsOnly, Category = "Tags")
+	FGameplayTag ParryTag;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USphereComponent* SphereComponent; // collision component
 	
