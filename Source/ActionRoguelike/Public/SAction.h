@@ -38,7 +38,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Action")
 	void StartAction(AActor* instigator); // instigator = one who is responsible for  
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Action")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Action")
 	void StopAction(AActor* instigator);
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Action")

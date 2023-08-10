@@ -18,6 +18,8 @@ ASAICharacter::ASAICharacter()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>("Attribute Component");
 
+	ActionComponent = CreateDefaultSubobject<USActionComponent>("Action Component");
+
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Ignore);
 	GetMesh()->SetGenerateOverlapEvents(true);
 }

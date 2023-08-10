@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SActionComponent.h"
 #include "SAttributeComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "GameFramework/Character.h"
@@ -30,6 +31,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	class TSubclassOf<UUserWidget> HealthBarWidgetClass;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	USActionComponent* ActionComponent;
+
 	UFUNCTION()
 	void DamageTaken(AActor* InstigatorActor, USAttributeComponent* OwningComponent, float NewHealth, float HealthChange);
 	
@@ -38,6 +42,7 @@ protected:
 	
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
+
 	
 	virtual void PostInitializeComponents() override;
 	void SetTarget(AActor* newTarget);
