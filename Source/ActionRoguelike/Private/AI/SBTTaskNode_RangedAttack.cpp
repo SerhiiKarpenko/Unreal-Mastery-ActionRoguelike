@@ -5,7 +5,7 @@
 
 USBTTaskNode_RangedAttack::USBTTaskNode_RangedAttack()
 {
-	MaxBulletSpread = 2.0f;
+	MaxBulletSpread = 0.8f;
 }
 
 #include "GameFramework/Character.h"

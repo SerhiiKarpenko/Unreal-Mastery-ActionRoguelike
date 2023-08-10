@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "SAction.h"
+#include "SActionEffect.h"
 #include "Components/ActorComponent.h"
 #include "SActionComponent.generated.h"
 
@@ -35,8 +36,11 @@ public:
 
 	
 	UFUNCTION(BlueprintCallable, Category = "Actions")
-	void AddAction(TSubclassOf<USAction> actionClass);
-		
+	void AddAction(AActor* instigator, TSubclassOf<USAction> actionClass);
+	
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	void RemoveAction(USAction* UsActionEffect);
+
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	bool StartActionByName(AActor* instigator, FName actionName);
 

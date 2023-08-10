@@ -67,6 +67,11 @@ void ASMagicProjectile::OnOverlapWithActor(
 
 	if(!USGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult) )
 		return;
+
+	if (actionComponent != nullptr)
+	{
+		actionComponent->AddAction(GetInstigator(), burningActionEffect);
+	}
 	
 	AudioComponent->Stop();
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), CameraShake, GetActorLocation(), 50, 50);
