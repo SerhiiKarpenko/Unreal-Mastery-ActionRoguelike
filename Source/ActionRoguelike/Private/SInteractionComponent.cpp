@@ -23,6 +23,99 @@ void USInteractionComponent::BeginPlay()
 void USInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	FindBestInteractable();
+}
+
+bool USInteractionComponent::CrateInteractionWidget()
+{
+	DefaultWidgetInstance = CreateWidget<USWorldUserWidget>(GetWorld(), DefaultWidgetClass);
+	DefaultWidgetInstance->AttachedActor = FocusedActor;
+	_previousFocusedActor = FocusedActor;
+	
+	if (DefaultWidgetInstance->IsInViewport())
+		return true;
+		
+	DefaultWidgetInstance->AddToViewport();
+	return false;
+}
+
+void USInteractionComponent::FindBestInteractable()
+{
+	FCollisionObjectQueryParams objectParameters;
+	objectParameters.AddObjectTypesToQuery(ECC_WorldDynamic);
+	FCollisionShape collisionShape;
+	float radius = 30.0f;
+	
+	collisionShape.SetSphere(radius);
+
+	AActor* player = GetOwner(); // get's the owner of component
+	
+	TArray<FHitResult> hits;
+	
+	FVector eyeLocation;
+	FRotator eyeRotation;
+
+	player->GetActorEyesViewPoint(eyeLocation, eyeRotation);
+	
+	FVector end = eyeLocation + (eyeRotation.Vector() * _interactionDistance);
+	
+	GetWorld()->SweepMultiByObjectType(
+		hits,
+		eyeLocation,
+		end,
+		FQuat::Identity,
+		objectParameters,
+		collisionShape);
+
+	if(CVarDrawDebugs.GetValueOnGameThread())
+		DrawDebugLine(GetWorld(), eyeLocation, end, FColor::Red, false, 2.0f, 0, 2.0f);
+
+	FocusedActor = nullptr;
+	
+	for (FHitResult hit : hits)
+	{
+		AActor* hitActor = hit.GetActor();
+		
+		if(CVarDrawDebugs.GetValueOnGameThread())
+			DrawDebugSphere(GetWorld(), hit.ImpactPoint, radius, 32, FColor::Red, false, 2.0f);
+	
+		if(hitActor == nullptr)
+			continue;
+		
+		if(!hitActor->Implements<USGameplayInterface>())
+			continue;
+
+		FocusedActor = hitActor;
+		break;
+	}
+
+	if (!ensure(DefaultWidgetClass))
+		return;
+
+	if (FocusedActor != nullptr)
+	{
+		if (DefaultWidgetInstance != nullptr)
+		{
+			if (FocusedActor != _previousFocusedActor)
+			{
+				DefaultWidgetInstance->RemoveFromParent();
+				DefaultWidgetInstance = nullptr;
+
+				CrateInteractionWidget();
+			}
+			return;
+		}
+		
+		CrateInteractionWidget();
+	}
+	else
+	{
+		if (DefaultWidgetInstance == nullptr)
+			return;
+
+		DefaultWidgetInstance->RemoveFromParent();
+		DefaultWidgetInstance = nullptr;
+	}
 }
 
 void USInteractionComponent::PrimaryInteract()
@@ -61,52 +154,13 @@ void USInteractionComponent::PrimaryInteract()
 
 void USInteractionComponent::SecondInteract()
 {
-	FCollisionObjectQueryParams objectParameters;
-	objectParameters.AddObjectTypesToQuery(ECC_WorldDynamic);
-	FCollisionShape collisionShape;
-	float radius = 30.0f;
-	
-	collisionShape.SetSphere(radius);
-
-	AActor* player = GetOwner(); // get's the owner of component
-	
-	TArray<FHitResult> hits;
-	
-	FVector eyeLocation;
-	FRotator eyeRotation;
-
-	player->GetActorEyesViewPoint(eyeLocation, eyeRotation);
-	
-	FVector end = eyeLocation + (eyeRotation.Vector() * _interactionDistance);
-	
-	GetWorld()->SweepMultiByObjectType(
-		hits,
-		eyeLocation,
-		end,
-		FQuat::Identity,
-		objectParameters,
-		collisionShape);
-
-	if(CVarDrawDebugs.GetValueOnGameThread())
-		DrawDebugLine(GetWorld(), eyeLocation, end, FColor::Red, false, 2.0f, 0, 2.0f);
-	
-	for (FHitResult hit : hits)
+	if (FocusedActor == nullptr)
 	{
-		AActor* hitActor = hit.GetActor();
-		
-		if(CVarDrawDebugs.GetValueOnGameThread())
-			DrawDebugSphere(GetWorld(), hit.ImpactPoint, radius, 32, FColor::Red, false, 2.0f);
-	
-		if(hitActor == nullptr)
-			continue;
-		
-		if(!hitActor->Implements<USGameplayInterface>())
-			continue;
-		
-		// player will interact with first item detected.
-		APawn* playerPawn = Cast<APawn>(player);
-		ISGameplayInterface::Execute_Interact(hitActor, playerPawn);
-		return; 
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "No focused actor");
+		return;
 	}
+	
+	APawn* playerPawn = Cast<APawn>(GetOwner());
+	ISGameplayInterface::Execute_Interact(FocusedActor, playerPawn);
 }
 

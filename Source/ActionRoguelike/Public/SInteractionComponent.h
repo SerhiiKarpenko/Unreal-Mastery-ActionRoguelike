@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SWorldUserWidget.h"
 #include "Components/ActorComponent.h"
 #include "SInteractionComponent.generated.h"
 
@@ -16,13 +17,29 @@ public:
 	USInteractionComponent();
 
 protected:
+	
 	virtual void BeginPlay() override;
+	void FindBestInteractable();
 
-public:	
+	UPROPERTY()
+	AActor* FocusedActor;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<USWorldUserWidget> DefaultWidgetClass;
+	
+	UPROPERTY()
+	class USWorldUserWidget* DefaultWidgetInstance;
+	
+public:
+	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	bool CrateInteractionWidget();
 	void PrimaryInteract();
 	void SecondInteract();
 
+
 private:
+	
 	float _interactionDistance;
+	AActor* _previousFocusedActor;
 };
