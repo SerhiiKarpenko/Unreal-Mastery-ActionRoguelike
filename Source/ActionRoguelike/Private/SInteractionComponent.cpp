@@ -23,6 +23,12 @@ void USInteractionComponent::BeginPlay()
 void USInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	APawn* pawn = Cast<APawn>(GetOwner());
+	
+	if( !pawn->IsLocallyControlled() )
+		return;
+	
 	FindBestInteractable();
 }
 
@@ -155,13 +161,18 @@ void USInteractionComponent::PrimaryInteract()
 
 void USInteractionComponent::SecondInteract()
 {
-	if (FocusedActor == nullptr)
+	ServerInteract(FocusedActor);
+}
+
+void USInteractionComponent::ServerInteract_Implementation(AActor* inFocus)
+{
+	if (inFocus == nullptr)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "No focused actor");
 		return;
 	}
 	
 	APawn* playerPawn = Cast<APawn>(GetOwner());
-	ISGameplayInterface::Execute_Interact(FocusedActor, playerPawn);
+	ISGameplayInterface::Execute_Interact(inFocus, playerPawn);
 }
 

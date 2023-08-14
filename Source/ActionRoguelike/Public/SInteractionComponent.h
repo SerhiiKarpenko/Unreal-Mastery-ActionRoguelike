@@ -29,6 +29,15 @@ protected:
 	
 	UPROPERTY()
 	class USWorldUserWidget* DefaultWidgetInstance;
+
+
+	//-------------------NET WORKING--------------------//
+	
+	// Reliable = will always arrive, eventually. Request will be re-sent unless an acknowledgment was received
+	// Unreliable = not guaranteed, packet can get lost and wont retry
+	
+	UFUNCTION(Server, Reliable)
+	void ServerInteract(AActor* inFocus);
 	
 public:
 	
