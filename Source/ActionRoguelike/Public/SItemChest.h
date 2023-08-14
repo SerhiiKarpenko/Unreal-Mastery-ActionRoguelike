@@ -15,8 +15,6 @@ class ACTIONROGUELIKE_API ASItemChest : public AActor, public ISGameplayInterfac
 {
 	GENERATED_BODY()
 
-private:
-	bool _isOpened;
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -28,6 +26,12 @@ public:
 	void Interact_Implementation(APawn* InstigatorPawn) override;
 
 protected:
+
+	UPROPERTY(ReplicatedUsing = "OnRep_LidOpened", BlueprintReadOnly) //RepNotify = ReplicatedUsing
+	bool _isOpened;
+
+	UFUNCTION()
+	void OnRep_LidOpened();
 	
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
