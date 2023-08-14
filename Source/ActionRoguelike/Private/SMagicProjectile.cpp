@@ -33,6 +33,8 @@ ASMagicProjectile::ASMagicProjectile()
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>("Audio component");
 	AudioComponent->SetupAttachment(SphereComponent);
 	DamageAmount = 20.0f;
+
+	SetReplicates(true);
 }
 
 

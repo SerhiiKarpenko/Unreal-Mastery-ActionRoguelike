@@ -21,6 +21,8 @@ ASBaseProjectile::ASBaseProjectile()
 	ProjectileMovementComponent->InitialSpeed = 1000.0f;
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
 	ProjectileMovementComponent->bInitialVelocityInLocalSpace = true;
+
+	SetReplicates(true);
 }
 
 void ASBaseProjectile::BeginPlay()
