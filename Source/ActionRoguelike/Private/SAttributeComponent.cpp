@@ -20,11 +20,12 @@ bool USAttributeComponent::ApplyDamage(AActor* instigatorActor, float damageToAp
 	
 	if (abs(damageToApply) >= Health)
 	{
-		if (IsAlive())
-			Die(instigatorActor);
-		
 		Health = 0;
+		
 		OnHealthChanged.Broadcast(instigatorActor, this, Health, damageToApply);
+		
+		Die(instigatorActor);
+		
 		return false;
 	}
 	
