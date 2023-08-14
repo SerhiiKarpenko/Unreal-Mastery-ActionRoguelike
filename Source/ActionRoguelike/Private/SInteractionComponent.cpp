@@ -96,6 +96,7 @@ void USInteractionComponent::FindBestInteractable()
 	{
 		if (DefaultWidgetInstance != nullptr)
 		{
+			// actor has changed but widget instance is not null
 			if (FocusedActor != _previousFocusedActor)
 			{
 				DefaultWidgetInstance->RemoveFromParent();
