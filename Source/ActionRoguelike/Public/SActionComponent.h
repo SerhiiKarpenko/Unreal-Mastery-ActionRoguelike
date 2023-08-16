@@ -23,6 +23,12 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION(Server, Reliable)
+	void ServerStartAction(AActor* instigator, FName actionName);
+
+	UFUNCTION(Server, Reliable)
+	void ServerStopAction(AActor* instigator, FName actionName);
+	
 	UPROPERTY()
 	TArray<USAction*> Actions;
 	

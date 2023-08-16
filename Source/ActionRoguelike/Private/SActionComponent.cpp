@@ -63,6 +63,10 @@ bool USActionComponent::StartActionByName(AActor* instigator, FName actionName)
 			continue;
 		}
 
+		//is client ? 
+		if (!GetOwner()->HasAuthority())
+			ServerStartAction(instigator, actionName);
+
 		action->StartAction(instigator);
 		return true;
 	}
@@ -79,12 +83,25 @@ bool USActionComponent::StopActionByName(AActor* instigator, FName actionName)
 
 		if (!action->IsRunning())
 			continue;
+
+		if (!GetOwner()->HasAuthority())
+			ServerStopAction(instigator, actionName);
 		
 		action->StopAction(instigator);
 		return true;
 	}
 	
 	return false;	
+}
+
+void USActionComponent::ServerStartAction_Implementation(AActor* instigator, FName actionName)
+{
+	StartActionByName(instigator, actionName);
+}
+
+void USActionComponent::ServerStopAction_Implementation(AActor* instigator, FName actionName)
+{
+	StopActionByName(instigator, actionName);
 }
 
 

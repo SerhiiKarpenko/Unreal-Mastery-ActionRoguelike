@@ -31,7 +31,8 @@ protected:
 	bool _isOpened;
 
 	UFUNCTION()
-	void OnRep_LidOpened();
+	void
+	OnRep_LidOpened();
 	
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
