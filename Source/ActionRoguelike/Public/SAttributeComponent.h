@@ -31,7 +31,8 @@ public:
 	float GetMaxHP();
 	float GetHP();
 	float GetHPPercent();
-	void ResetHP(); 
+	void ResetHP();
+	
 protected:
 
 	// EditAnywhere - edit in BP editor pre-instance in level
@@ -45,12 +46,16 @@ protected:
 	// --
 	// Category = "" - display only for detail panels anb blueprint context menu
 	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Replicated, Category = "Attributes")
 	float Health;
 	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Replicated, Category = "Attributes")
 	float MaxHealth;
-	//MaxHealth, Stamina, Strength
+
+	UFUNCTION(NetMulticast, Reliable) //TODO fix this, mark as unreliable once we moved the 'state' our of SCharacter
+	void MulticastHealthChanged(AActor* instigator, float newHealth, float healthChange);
+	
+	// Stamina, Strength
 
 public:
 

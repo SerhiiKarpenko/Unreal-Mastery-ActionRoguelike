@@ -1,5 +1,6 @@
 #include "SAttributeComponent.h"
 #include "SGameModeBase.h"
+#include "Net/UnrealNetwork.h"
 
 static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("ar.DamageMultiplier"), 1.0f,
 	TEXT("Global damage multiplier for Attribute Component"),ECVF_Cheat);
@@ -8,6 +9,8 @@ static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("ar.DamageMultiplie
 USAttributeComponent::USAttributeComponent()
 {
 	Health = MaxHealth;
+
+	SetIsReplicatedByDefault(true);
 }
 
 bool USAttributeComponent::ApplyDamage(AActor* instigatorActor, float damageToApply)
@@ -23,7 +26,7 @@ bool USAttributeComponent::ApplyDamage(AActor* instigatorActor, float damageToAp
 		Health = 0;
 		
 		OnHealthChanged.Broadcast(instigatorActor, this, Health, damageToApply);
-		
+		//MulticastHealthChanged(instigatorActor, Health, damageMultiplier);
 		Die(instigatorActor);
 		
 		return false;
@@ -31,6 +34,7 @@ bool USAttributeComponent::ApplyDamage(AActor* instigatorActor, float damageToAp
 	
 	Health += damageToApply;
 	OnHealthChanged.Broadcast(instigatorActor, this, Health, damageToApply);
+	//MulticastHealthChanged(instigatorActor, Health, damageMultiplier);
 	return true;
 }
 
@@ -43,11 +47,13 @@ bool USAttributeComponent::Heal(AActor* InstigatorActor ,float healToApply)
 	{
 		Health = MaxHealth;
 		OnHealthChanged.Broadcast(InstigatorActor, this, Health, healToApply);
+		//MulticastHealthChanged(InstigatorActor, Health, healToApply);
 		return true;
 	}
 	
 	Health += healToApply;
 	OnHealthChanged.Broadcast(InstigatorActor, this, Health, healToApply);
+	//MulticastHealthChanged(InstigatorActor, Health, healToApply);
 	return true;
 }
 
@@ -116,6 +122,21 @@ void USAttributeComponent::ResetHP()
 {
 	Health = MaxHealth;
 	OnHealthChanged.Broadcast(GetOwner(), this, Health, 0);
+}
+
+void USAttributeComponent::MulticastHealthChanged_Implementation(AActor* instigator, float newHealth,float healthChange)
+{
+	OnHealthChanged.Broadcast(instigator, this, newHealth, healthChange);
+}
+
+void USAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(USAttributeComponent, Health);
+	DOREPLIFETIME(USAttributeComponent, MaxHealth);
+	
+	//DOREPLIFETIME_CONDITION(USAttributeComponent, MaxHealth, COND_InitialOnly);
 }
 
 
